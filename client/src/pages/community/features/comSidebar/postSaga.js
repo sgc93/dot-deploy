@@ -15,7 +15,7 @@ function* workPostDeleteSaga(action) {
 	try {
 		yield call(
 			axios.delete,
-			`http://localhost:9000/api/v1/posts/${action.payload.id}`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/posts/${action.payload.id}`,
 			action.payload,
 			{
 				withCredentials: true,
@@ -44,7 +44,7 @@ function* workPostUpdateSaga(action) {
 	try {
 		yield call(
 			axios.patch,
-			`http://localhost:9000/api/v1/posts/${action.payload.id}`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/posts/${action.payload.id}`,
 			action.payload.data,
 			{
 				withCredentials: true,
@@ -73,7 +73,7 @@ function* workPostCreateSaga(action) {
 	try {
 		yield call(
 			axios.post,
-			"http://localhost:9000/api/v1/posts",
+			`${import.meta.env.VITE_REACT_APP_API_URL}/posts`,
 			action.payload,
 			{
 				withCredentials: true,

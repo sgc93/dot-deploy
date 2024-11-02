@@ -20,8 +20,8 @@ function* workDetailingSagas(action) {
 	const id = action.payload.id;
 	const isProject = action.payload.isProject;
 	const url = isProject
-		? `http://localhost:9000/api/v1/projects/${id}`
-		: `http://localhost:9000/api/v1/posts/${id}`;
+		? `${import.meta.env.VITE_REACT_APP_API_URL}/projects/${id}`
+		: `${import.meta.env.VITE_REACT_APP_API_URL}/posts/${id}`;
 	try {
 		const response = yield call(
 			axios.get,
@@ -57,8 +57,8 @@ function* workCommentSaga(action) {
 	const isProject = action.payload.isProject;
 	const id = action.payload.to;
 	let url = isProject
-		? `http://localhost:9000/api/v1/projects/${id}/comments`
-		: `http://localhost:9000/api/v1/posts/${id}/comments`;
+		? `${import.meta.env.VITE_REACT_APP_API_URL}/projects/${id}/comments`
+		: `${import.meta.env.VITE_REACT_APP_API_URL}/posts/${id}/comments`;
 
 	try {
 		yield put(resetNotifier());
@@ -90,8 +90,12 @@ export function* watchCommentSagas() {
 function* workLikeSagas(action) {
 	const isProject = action.payload.isProject;
 	const url = isProject
-		? `http://localhost:9000/api/v1/projects/${action.payload.type}/${action.payload.to}`
-		: `http://localhost:9000/api/v1/posts/${action.payload.type}/${action.payload.to}`;
+		? `${import.meta.env.VITE_REACT_APP_API_URL}/projects/${
+				action.payload.type
+		  }/${action.payload.to}`
+		: `${import.meta.env.VITE_REACT_APP_API_URL}/posts/${action.payload.type}/${
+				action.payload.to
+		  }`;
 	try {
 		const response = yield call(
 			axios.patch,
@@ -126,13 +130,13 @@ function* workCommDataSagas() {
 	try {
 		const latestRes = yield call(
 			axios.get,
-			"http://localhost:9000/api/v1/latest",
+			`${import.meta.env.VITE_REACT_APP_API_URL}/latest`,
 			{},
 			{ withCredentials: true }
 		);
 		const proRes = yield call(
 			axios.get,
-			"http://localhost:9000/api/v1/projects?sort=likes&limit=5",
+			`${import.meta.env.VITE_REACT_APP_API_URL}/projects?sort=likes&limit=5`,
 			{},
 			{ withCredentials: true }
 		);

@@ -13,7 +13,9 @@ function* workProjectUpdate(action) {
 	try {
 		const response = yield call(
 			axios.patch,
-			`http://localhost:9000/api/v1/projects/${action.payload._id}`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/projects/${
+				action.payload._id
+			}`,
 			action.payload,
 			{
 				withCredentials: true,

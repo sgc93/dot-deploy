@@ -14,7 +14,7 @@ function* workUserDataSagas(action) {
 	try {
 		const response = yield call(
 			axios.get,
-			"http://localhost:9000/api/v1/users/me",
+			`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`,
 			{
 				withCredentials: true,
 			}
@@ -42,7 +42,7 @@ function* workLogoutSaga() {
 		yield put(setNotifier({ loading: "logging out ..." }));
 		yield call(
 			axios.post,
-			"http://localhost:9000/api/v1/users/logout",
+			`${import.meta.env.VITE_REACT_APP_API_URL}/users/logout`,
 			{},
 			{
 				withCredentials: true,
