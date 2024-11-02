@@ -32,7 +32,7 @@ const SignIn = () => {
 	};
 
 	return (
-		<div className="flex flex-col text-slate-400 items-center gap-5 justify-center p-10">
+		<div className="w-[90dvh] sm:w-auto flex flex-col text-slate-400 items-center gap-5 justify-center p-10">
 			<div
 				className="self-start text-slate-500 ml-[20%] flex items-center tracking-wider rounded-md transition-all duration-300 underline underline-offset-4 hover:text-color-7 cursor-pointer"
 				onMouseLeave={() => setIsHovered(false)}

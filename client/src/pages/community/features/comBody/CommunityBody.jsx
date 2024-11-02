@@ -39,35 +39,37 @@ const CommunityBody = ({ setIsDetailing }) => {
 	};
 
 	return (
-		<div className="relative p-5 sm:pr-10 sd:pr-0 pt-8 flex flex-col gap-8 h-full">
-			{isLoading && <Loading message={"Loading new things"} />}
-			{error && <Error message={error} tryAgain={tryReadingDataAgain} />}
-			<div className="flex gap-8 h-full">
-				{isDone && (
-					<div className="relative w-full  sd:w-3/5 flex flex-col h-full">
-						<div className="flex items-start justify-between mb-3">
-							<div className="flex flex-col gap-3 sm:hidden">
-								<div className="flex items-center gap-3 -mt-[6px]">
-									<CommUserName
-										handleClick={handleProfile}
-										classes={"flex sm:hidden py-1 px-2"}
-									/>
-									<div className="pt-2">
-										<CreateNewBox />
+		<div className="relative w-full p-5 sm:pr-10 sd:pr-0 pt-8 flex flex-col gap-8 h-full">
+			<div className="flex gap-8 w-full h-full">
+				<div className="relative w-full sd:w-[73%] flex flex-col h-full">
+					{isLoading && <Loading message={"Loading new things"} />}
+					{error && <Error message={error} tryAgain={tryReadingDataAgain} />}
+					{isDone && (
+						<>
+							<div className="flex items-start justify-between mb-3">
+								<div className="flex flex-col gap-3 sm:hidden">
+									<div className="flex items-center gap-3 -mt-[6px]">
+										<CommUserName
+											handleClick={handleProfile}
+											classes={"flex sm:hidden py-1 px-2"}
+										/>
+										<div className="pt-2">
+											<CreateNewBox />
+										</div>
 									</div>
+									<span className=" text-slate-300 font-semibold font-sans">
+										{"What's new?"}
+									</span>
 								</div>
-								<span className=" text-slate-300 font-semibold font-sans">
+								<span className="sm:flex hidden text-slate-300 font-semibold font-sans">
 									{"What's new?"}
 								</span>
+								<Filter />
 							</div>
-							<span className="sm:flex hidden text-slate-300 font-semibold font-sans">
-								{"What's new?"}
-							</span>
-							<Filter />
-						</div>
-						<NewsList setIsDetailing={setIsDetailing} />
-					</div>
-				)}
+							<NewsList setIsDetailing={setIsDetailing} />
+						</>
+					)}
+				</div>
 				<CommunityNotification
 					classes={
 						"hidden sd:flex w-2/5 pr-10 pt-8 sd:flex flex-col gap-10 h-full overflow-x-hidden overflow-y-scroll small-scroll"

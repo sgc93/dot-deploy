@@ -93,7 +93,7 @@ const Search = ({ setIsSearching }) => {
 							<span className="text-slate-400 text-[14px]">Filters</span>
 							<div className="h-[1px] flex flex-grow bg-slate-500" />
 						</div>
-						<div className="sm:relative absolute  bottom-0 left-0 flex flex-col gap-2 backdrop-blur-2xl bg-n-13 px-2 sm:px-0">
+						<div className="sm:relative  flex flex-col gap-2 backdrop-blur-2xl bg-n-13 px-2 sm:px-0">
 							<div className="flex flex-col sm:flex-row gap-2">
 								<ProjectTab tag={tag} handleTagging={handleTagging} />
 								<div className="flex flex-col gap-2">

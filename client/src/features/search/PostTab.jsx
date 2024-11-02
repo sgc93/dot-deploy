@@ -23,7 +23,7 @@ const PostTab = ({ tag, handleTagging }) => {
 				>
 					Posts
 				</span>
-				<span className="text-slate-500">
+				<span className="text-slate-500 hidden sm:flex">
 					Read posts including{" "}
 					<span
 						className={`${

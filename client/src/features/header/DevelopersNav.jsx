@@ -38,7 +38,7 @@ const DevelopersNav = () => {
 			{isUiHovered && (
 				<div
 					id="snippetNav"
-					className="absolute right-0 top-[3.6rem] bg-slate-900 py-7 px-8 rounded-lg border-2 border-slate-800 flex flex-col sds:flex-row gap-5 shadow-lg shadow-gray-900 w-[60dvw]"
+					className="absolute right-1/2 translate-x-1/3 top-[3.5rem] bg-slate-900 py-7 px-8 rounded-lg border-2 border-slate-800 flex flex-col sds:flex-row gap-5 shadow-lg shadow-gray-900 w-[60dvw]"
 				>
 					<div className="flex flex-col gap-5 sds:w-1/2 h-max">
 						<a

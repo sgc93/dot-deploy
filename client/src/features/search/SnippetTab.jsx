@@ -23,7 +23,7 @@ const SnippetTab = ({ tag, handleTagging }) => {
 				>
 					Code Snippets
 				</span>
-				<span className="text-slate-500">
+				<span className="text-slate-500 hidden sm:flex">
 					Snippets written with different languages{" "}
 					<span
 						className={`${

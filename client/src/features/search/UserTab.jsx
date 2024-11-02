@@ -6,7 +6,7 @@ const UserTab = ({ tag, handleTagging }) => {
 
 	return (
 		<div
-			className={`flex justify-between gap-1 bg-slate-950  rounded-lg px-3 py-2 transition-all duration-500 hover:bg-opacity-90 cursor-pointer overflow-hidden text-sm border-[1px] hover:border-color-5 hover:border-opacity-70 ${
+			className={`w-full flex justify-between gap-1 bg-slate-950  rounded-lg px-3 py-2 transition-all duration-500 hover:bg-opacity-90 cursor-pointer overflow-hidden text-sm border-[1px] hover:border-color-5 hover:border-opacity-70 ${
 				tag === "user"
 					? "bg-opacity-90 border-color-5 border-opacity-70"
 					: "bg-opacity-70 border-slate-600 border-opacity-100"
@@ -15,15 +15,15 @@ const UserTab = ({ tag, handleTagging }) => {
 			onMouseLeave={() => setIsHovered(false)}
 			onClick={() => handleTagging("user")}
 		>
-			<div className="flex flex-col gap-1">
+			<div className="flex flex-col gap-1 w-full">
 				<span
 					className={`${
 						isHovered || tag === "user" ? "text-color-5" : "text-slate-300"
-					} transition-all duration-300 font-bold `}
+					} transition-all duration-300 font-bold w-full`}
 				>
 					Users
 				</span>
-				<span className="text-slate-500">
+				<span className="text-slate-500 hidden sm:flex">
 					Search and visit{" "}
 					<span
 						className={`${
