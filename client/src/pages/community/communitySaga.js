@@ -130,7 +130,7 @@ function* workCommDataSagas() {
 	try {
 		const latestRes = yield call(
 			axios.get,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/latest`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}api/v1/latest`,
 			{},
 			{ withCredentials: true }
 		);
@@ -138,7 +138,7 @@ function* workCommDataSagas() {
 			axios.get,
 			`${
 				import.meta.env.VITE_REACT_APP_API_URL
-			}/api/v1/projects?sort=likes&limit=5`,
+			}api/v1/projects?sort=likes&limit=5`,
 			{},
 			{ withCredentials: true }
 		);
