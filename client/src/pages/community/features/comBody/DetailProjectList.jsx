@@ -11,7 +11,7 @@ const Project = ({ project }) => {
 	const handleClick = () =>
 		openEditor("open", project.lngName, {
 			...project,
-			owner: { _id: project._id },
+			owner: { _id: project.owner },
 		});
 
 	return (

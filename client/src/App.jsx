@@ -9,7 +9,6 @@ import CommunityPage from "./pages/community/CommunityPage";
 import CommunityBody from "./pages/community/features/comBody/CommunityBody";
 import PostDetail from "./pages/community/features/comBody/PostDetail";
 import ProjectDetail from "./pages/community/features/comBody/ProjectDetail";
-import CommunityNotification from "./pages/community/features/comNotify/CommunityNotification";
 import EditorCodeBox from "./pages/editor/EditorCodeBox";
 import EditorPage from "./pages/editor/EditorPage";
 import HomePage from "./pages/home/HomePage";
@@ -62,12 +61,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: "",
-						element: (
-							<>
-								<CommunityBody />
-								<CommunityNotification />
-							</>
-						),
+						element: <CommunityBody />,
 					},
 				],
 			},

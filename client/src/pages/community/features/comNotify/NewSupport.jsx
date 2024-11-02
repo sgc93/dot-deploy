@@ -12,7 +12,7 @@ const NewSupport = () => {
 
 	return (
 		lngInfo && (
-			<div className="flex flex-col gap-2 min-h-[18rem] d:min-h-52 bg-[url('/assets/gradient1.svg')] bg-cover border-2 border-slate-800 rounded-md px-3 py-2 overflow-hidden">
+			<div className="flex flex-col gap-2 min-h-[10rem] d:min-h-52 bg-[url('/assets/gradient1.svg')] bg-cover border-2 border-slate-800 rounded-md px-3 py-2 overflow-hidden">
 				<div className="text-2xl uppercase bg-gradient-to-tl from-color-3 via-color-2 to-color-5 bg-clip-text text-transparent font-bold">
 					Try New Language!
 				</div>

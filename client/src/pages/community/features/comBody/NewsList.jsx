@@ -1,28 +1,8 @@
-import { MdOutlineCopyright } from "react-icons/md";
 import { useSelector } from "react-redux";
+import CommunityNotification from "../comNotify/CommunityNotification";
+import NewsFooter from "./NewsFooter";
 import PostNewsTab from "./PostNewsTab";
 import ProjectNewsTab from "./ProjectNewsTab";
-
-const NewsFooter = () => {
-	const date = new Date();
-
-	return (
-		<div className="flex items-center justify-center gap-3 text-sm font-sans text-center py-3 mt-6 text-slate-500">
-			<img src="/dot.svg" alt="" width={18} height={18} />
-			<div className="flex items-center gap-2">
-				<MdOutlineCopyright />
-				<span>{date.getFullYear()} DotCode</span>
-			</div>
-			<div className="flex items-center gap-2">
-				{["Terms", "Privacy", "Security", "Status", "Docs"].map(
-					(tab, index) => (
-						<span key={index}>{tab}</span>
-					)
-				)}
-			</div>
-		</div>
-	);
-};
 
 const NewsList = () => {
 	const { latests } = useSelector((state) => state.community);
@@ -49,6 +29,11 @@ const NewsList = () => {
 					<span>be the first to contribute!</span>
 				</div>
 			)}
+			<CommunityNotification
+				classes={
+					"flex w-full sd:hidden sd:flex pt-2 sd:flex flex-col gap-10 border-t-[1px] border-slate-800 mt-10"
+				}
+			/>
 			<NewsFooter />
 		</div>
 	);

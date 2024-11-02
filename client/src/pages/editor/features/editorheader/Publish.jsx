@@ -18,8 +18,8 @@ const Publish = ({ selectAction }) => {
 	const dispatch = useDispatch();
 	const navigateTo = useNavigate();
 	let isOwnerIsThisUser = false;
-	if (isUserSignedIn && project.owner && user.owner._id) {
-		isOwnerIsThisUser = project.owner._id.toString() === user.userId.toString();
+	if (isUserSignedIn && project.owner) {
+		isOwnerIsThisUser = project.owner._id === user.userId;
 	}
 
 	const handleSave = () => {

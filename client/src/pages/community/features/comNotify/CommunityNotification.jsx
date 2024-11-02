@@ -1,9 +1,10 @@
 import NewSupport from "./NewSupport";
 import Popular from "./Popular";
 
-const CommunityNotification = () => {
+const CommunityNotification = ({ classes }) => {
 	return (
-		<div className="hidden w-1/4 pr-10 pt-8 sd:flex flex-col gap-10 h-full overflow-x-hidden overflow-y-scroll small-scroll">
+		<div className={`${classes} `}>
+			<span className="text-slate-400">dotcode says:</span>
 			<NewSupport />
 			<Popular />
 		</div>
