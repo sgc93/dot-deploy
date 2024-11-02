@@ -15,8 +15,8 @@ const app = express();
 
 // Define the origins based on environment
 const allowedOrigins = {
-	development: "http://localhost:5173",
-	production: "https://your-production-url.com",
+	development: process.env.DEV_CLIENT,
+	production: process.env.PROD_CLIENT,
 };
 
 const currentEnvironment = process.env.NODE_ENV || "development";
@@ -44,6 +44,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
+app.use("/", (req, res, next) =>
+	res.status(200).json({
+		status: success,
+		message: "hi there",
+	})
+);
 app.use("/api/v1/projects", projectRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/comments", commentRoute);
