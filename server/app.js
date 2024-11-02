@@ -13,16 +13,10 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// Define the origins based on environment
-const allowedOrigins = {
-	development: process.env.DEV_CLIENT,
-	production: process.env.PROD_CLIENT,
-};
+// Define allowed frontend origin
+const frontendOrigin = "https://dot-code-nu.vercel.app";
 
-const currentEnvironment = process.env.NODE_ENV || "development";
-const frontendOrigin = allowedOrigins[currentEnvironment];
-
-// Middleware for CORS
+// Configure CORS to allow requests from your frontend origin
 app.use(
 	cors({
 		origin: frontendOrigin,
@@ -30,6 +24,7 @@ app.use(
 	})
 );
 
+// Optionally, add more headers if needed
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", frontendOrigin);
 	res.header("Access-Control-Allow-Credentials", "true");
