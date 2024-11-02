@@ -5,7 +5,7 @@ import Hero from "./features/hero/Hero";
 
 const HomePage = () => {
 	return (
-		<section className="flex flex-col inset-0">
+		<section className="flex flex-col inset-0 max-w-[100dvw] overflow-hidden">
 			<Header />
 			<Hero />
 			<Features />
