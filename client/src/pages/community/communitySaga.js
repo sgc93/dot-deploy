@@ -1,0 +1,163 @@
+import axios from "axios";
+import { call, put, takeLatest } from "redux-saga/effects";
+import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
+import {
+	commentFailure,
+	commentRequest,
+	commentSuccess,
+	detailDataFailure,
+	detailDataRequest,
+	getDataFailure,
+	getDataRequest,
+	getDataSuccess,
+	likeRequest,
+	likeSuccess,
+	postDataSuccess,
+	projectDataSuccess,
+} from "./communitySlice";
+
+function* workDetailingSagas(action) {
+	const id = action.payload.id;
+	const isProject = action.payload.isProject;
+	const url = isProject
+		? `http://localhost:9000/api/v1/projects/${id}`
+		: `http://localhost:9000/api/v1/posts/${id}`;
+	try {
+		const response = yield call(
+			axios.get,
+			url,
+			{},
+			{
+				withCredentials: true,
+			}
+		);
+		const data = response.data.data.doc;
+		if (isProject) {
+			yield put(projectDataSuccess(data));
+		} else {
+			yield put(postDataSuccess(data));
+		}
+	} catch (error) {
+		const message = error.response
+			? error.response.data
+				? error.response.data.message
+				: error.message
+			: error.message;
+		yield put(detailDataFailure(message));
+		yield put(resetNotifier());
+		yield put(setNotifier({ error: message }));
+	}
+}
+
+export function* watchDetailingSagas() {
+	yield takeLatest(detailDataRequest.type, workDetailingSagas);
+}
+
+function* workCommentSaga(action) {
+	const isProject = action.payload.isProject;
+	const id = action.payload.to;
+	let url = isProject
+		? `http://localhost:9000/api/v1/projects/${id}/comments`
+		: `http://localhost:9000/api/v1/posts/${id}/comments`;
+
+	try {
+		yield put(resetNotifier());
+		yield put(setNotifier({ loading: "uploading comment ..." }));
+		const response = yield call(axios.post, url, action.payload.comment, {
+			withCredentials: true,
+		});
+
+		const message = response.data.message;
+		yield put(commentSuccess());
+		yield put(resetNotifier());
+		yield put(setNotifier({ success: message }));
+	} catch (error) {
+		const message = error.response
+			? error.response.data
+				? error.response.data.message
+				: error.message
+			: error.message;
+		yield put(commentFailure(message));
+		yield put(resetNotifier());
+		yield put(setNotifier({ error: message }));
+	}
+}
+
+export function* watchCommentSagas() {
+	yield takeLatest(commentRequest.type, workCommentSaga);
+}
+
+function* workLikeSagas(action) {
+	const isProject = action.payload.isProject;
+	const url = isProject
+		? `http://localhost:9000/api/v1/projects/${action.payload.type}/${action.payload.to}`
+		: `http://localhost:9000/api/v1/posts/${action.payload.type}/${action.payload.to}`;
+	try {
+		const response = yield call(
+			axios.patch,
+			url,
+			{},
+			{
+				withCredentials: true,
+			}
+		);
+
+		const message = response.data.message;
+		yield put(likeSuccess());
+		yield put(resetNotifier());
+		yield put(setNotifier({ success: message }));
+	} catch (error) {
+		const message = error.response
+			? error.response.data
+				? error.response.data.message
+				: error.message
+			: error.message;
+		yield put(likeSuccess(""));
+		yield put(resetNotifier());
+		yield put(setNotifier({ error: message }));
+	}
+}
+
+export function* watchLikeSagas() {
+	yield takeLatest(likeRequest.type, workLikeSagas);
+}
+
+function* workCommDataSagas() {
+	try {
+		const latestRes = yield call(
+			axios.get,
+			"http://localhost:9000/api/v1/latest",
+			{},
+			{ withCredentials: true }
+		);
+		const proRes = yield call(
+			axios.get,
+			"http://localhost:9000/api/v1/projects?sort=likes&limit=5",
+			{},
+			{ withCredentials: true }
+		);
+		const latests = latestRes.data.data.latests;
+		const topProjects = proRes.data.data.docs;
+
+		yield put(
+			getDataSuccess({
+				latests: latests,
+				topProjects: topProjects,
+				notifications: [],
+			})
+		);
+	} catch (error) {
+		const message = error.response
+			? error.response.data
+				? error.response.data.message
+				: error.message
+			: error.message;
+		yield put(getDataFailure(message));
+	}
+}
+
+function* watchCommDataSagas() {
+	yield takeLatest(getDataRequest.type, workCommDataSagas);
+}
+
+export default watchCommDataSagas;

@@ -1,0 +1,40 @@
+import axios from "axios";
+import { call, put, takeLatest } from "redux-saga/effects";
+import { setNotifier } from "../../ui/notifierSlice";
+import { setSavedProject } from "./features/editorheader/saveSlice";
+import {
+	updateProjectFailure,
+	updateProjectRequest,
+	updateProjectSuccess,
+} from "./projectSlice";
+
+function* workProjectUpdate(action) {
+	console.log(action.payload);
+	try {
+		const response = yield call(
+			axios.patch,
+			`http://localhost:9000/api/v1/projects/${action.payload._id}`,
+			action.payload,
+			{
+				withCredentials: true,
+			}
+		);
+		yield put(updateProjectSuccess());
+		yield put(setSavedProject(response.data.updatedDoc));
+		yield put(setNotifier({ success: "Your change is saved successfully!" }));
+	} catch (error) {
+		const message = error.response
+			? error.response.data
+				? error.response.data.message
+				: error.message
+			: error.message;
+		yield put(updateProjectFailure(message));
+		yield put(setNotifier({ error: error }));
+	}
+}
+
+function* watchProjectUpdateSaga() {
+	yield takeLatest(updateProjectRequest.type, workProjectUpdate);
+}
+
+export default watchProjectUpdateSaga;
