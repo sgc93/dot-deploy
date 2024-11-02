@@ -130,7 +130,7 @@ function* workCommDataSagas() {
 	try {
 		const latestRes = yield call(
 			axios.get,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/latest`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}latest`,
 			{},
 			{ withCredentials: true }
 		);
