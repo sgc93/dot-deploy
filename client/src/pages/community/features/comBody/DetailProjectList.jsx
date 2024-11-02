@@ -8,7 +8,11 @@ const Project = ({ project }) => {
 	const isSnippet = project.type == "snippet";
 	const openEditor = useEditorOpen();
 
-	const handleClick = () => openEditor("open", project.lngName, project);
+	const handleClick = () =>
+		openEditor("open", project.lngName, {
+			...project,
+			owner: { _id: project._id },
+		});
 
 	return (
 		<button
