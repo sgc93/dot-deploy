@@ -11,7 +11,9 @@ import {
 function* workItemDeleteSaga(action) {
 	const itemName = action.payload.itemName;
 	const id = action.payload.id;
-	let url = `${import.meta.env.VITE_REACT_APP_API_URL}/${itemName}s/${id}`;
+	let url = `${
+		import.meta.env.VITE_REACT_APP_API_URL
+	}/api/v1/${itemName}s/${id}`;
 
 	try {
 		yield put(resetNotifier());
@@ -45,7 +47,9 @@ function* userProfileSagas(action) {
 	try {
 		const response = yield call(
 			axios.get,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/users/${action.payload}`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/users/${
+				action.payload
+			}`,
 			{
 				withCredentials: true,
 			}

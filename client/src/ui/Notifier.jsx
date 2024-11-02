@@ -47,7 +47,7 @@ const Notifier = () => {
 		return (
 			<div
 				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-5 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-color-1 text-color-1 font-semibold tracking-wider font-sans`}
+				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-5 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-color-1 text-color-1 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
 			>
 				<div className="flex items-center gap-1">
 					<GoDot className="loadingNotifier" />
@@ -67,7 +67,7 @@ const Notifier = () => {
 		return (
 			<div
 				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-red-500 text-red-500 font-semibold tracking-wider font-sans`}
+				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-red-500 text-red-500 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
 			>
 				<span className=" text-lg">{error}</span>
 				<button
@@ -82,7 +82,7 @@ const Notifier = () => {
 		return (
 			<div
 				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-green-500 text-green-500 font-semibold tracking-wider font-sans`}
+				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-green-500 text-green-500 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
 			>
 				<span className=" text-lg">{success}</span>
 				<button
@@ -97,7 +97,7 @@ const Notifier = () => {
 		return (
 			<div
 				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-yellow-500 text-yellow-500 font-semibold tracking-wider font-sans`}
+				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-yellow-500 text-yellow-500 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
 			>
 				<span className=" text-lg">{warning}</span>
 				<button
@@ -112,15 +112,9 @@ const Notifier = () => {
 		return (
 			<div
 				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-color-5 text-color-5 font-semibold tracking-wider font-sans`}
+				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center text-slate-300 -translate-x-1/2 flex items-center gap-3 bg-n-14 px-4 py-[6px] rounded-md border-2 border-[#555] shadow-md shadow-slate-950 text-color-5 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
 			>
 				<span className=" text-lg">{notification}</span>
-				<button
-					className="text-xl  hover:bg-color-5 hover:bg-opacity-30 rounded-full p-[1px] -mr-1 transition-all duration-500 hover:text-red-500 bg-slate-800"
-					onClick={() => closeNotifier()}
-				>
-					<MdClose />
-				</button>
 			</div>
 		);
 	}

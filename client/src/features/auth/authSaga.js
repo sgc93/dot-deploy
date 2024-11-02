@@ -14,11 +14,13 @@ function* workUserDataSagas(action) {
 	try {
 		const response = yield call(
 			axios.get,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/users/me`,
 			{
 				withCredentials: true,
 			}
 		);
+		console.log(response);
+
 		yield put(userDataSuccess(response.data.data.doc));
 	} catch (error) {
 		const message = error.response
@@ -42,7 +44,7 @@ function* workLogoutSaga() {
 		yield put(setNotifier({ loading: "logging out ..." }));
 		yield call(
 			axios.post,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/users/logout`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/users/logout`,
 			{},
 			{
 				withCredentials: true,

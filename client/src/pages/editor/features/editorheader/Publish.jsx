@@ -17,10 +17,10 @@ const Publish = ({ selectAction }) => {
 	const { project } = useSelector((state) => state.project);
 	const dispatch = useDispatch();
 	const navigateTo = useNavigate();
-	const isOwnerIsThisUser =
-		isUserSignedIn &&
-		project.owner &&
-		project.owner._id.toString() === user.userId.toString();
+	let isOwnerIsThisUser = false;
+	if (isUserSignedIn && project.owner && user.owner._id) {
+		isOwnerIsThisUser = project.owner._id.toString() === user.userId.toString();
+	}
 
 	const handleSave = () => {
 		if (isUserSignedIn) {

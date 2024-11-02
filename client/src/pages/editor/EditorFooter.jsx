@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { BiFontSize } from "react-icons/bi";
 import { BsCode } from "react-icons/bs";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { MdOutlineKeyboardTab } from "react-icons/md";
 import { PiPlaceholder } from "react-icons/pi";
 import { VscBellDot } from "react-icons/vsc";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
 
 const FooterTooltip = ({ content, classes }) => {
 	return (
@@ -25,94 +25,84 @@ const EditorFooter = () => {
 	const { project, currLng } = useSelector((state) => state.project);
 	const { logs } = useSelector((state) => state.editor);
 
-	const [isHovered1, setIsHovered1] = useState(false);
-	const [isHovered2, setIsHovered2] = useState(false);
-	const [isHovered3, setIsHovered3] = useState(false);
-	const [isHovered4, setIsHovered4] = useState(false);
-	const [isHovered5, setIsHovered5] = useState(false);
-	const [isHovered6, setIsHovered6] = useState(false);
-	const [isHovered7, setIsHovered7] = useState(false);
-	const [isHovered8, setIsHovered8] = useState(false);
+	const dispatch = useDispatch();
+
+	const showAbout = (content) => {
+		dispatch(resetNotifier());
+		dispatch(setNotifier({ notification: content }));
+	};
 
 	return (
 		<div
-			className={`max-h-[1.3rem] flex-grow flex items-center justify-between px-4 text-[11px] text-zinc-400 bg-[#23272f] py-[-5px] border-t-[1px] border-[#4d4949] font-code w-max sd:w-full`}
+			className={`max-h-[1.3rem] flex-grow flex items-center justify-between px-4 text-[11px] text-zinc-400 bg-[#23272f] py-[-5px] border-t-[1px] border-[#4d4949] font-code w-full overflow-x-scroll overflow-y-hidden code-area`}
 		>
-			<div className="flex items-center gap-3">
+			<div className="flex items-center gap-3 w-max">
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered1(true)}
-					onMouseLeave={() => setIsHovered1(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
+					onMouseEnter={() =>
+						showAbout(`Current Project Type : ${project.type}`)
+					}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<span className="font-semibold">{project.type.toUpperCase()}</span>
-					{isHovered1 && (
-						<FooterTooltip content={`Current Project Type : ${project.type}`} />
-					)}
 				</div>
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered2(true)}
-					onMouseLeave={() => setIsHovered2(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
+					onMouseEnter={() =>
+						showAbout(`Language Mode : ${currLng.toUpperCase()}`)
+					}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<BsCode />
 					<span>{currLng}</span>
-					{isHovered2 && (
-						<FooterTooltip
-							content={`Language Mode : ${currLng.toUpperCase()}`}
-						/>
-					)}
 				</div>
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered3(true)}
-					onMouseLeave={() => setIsHovered3(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
+					onMouseEnter={() => showAbout(`Errors: ${logs.length}`)}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<span className={`${logs.length > 0 ? "text-color-3" : ""}`}>
 						errors: {logs.length}
 					</span>
-					{isHovered3 && <FooterTooltip content={`Errors: ${logs.length}`} />}
 				</div>
 			</div>
-			<div className="flex items-center gap-3">
+			<div className="flex items-center gap-3 w-max">
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered4(true)}
-					onMouseLeave={() => setIsHovered4(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
+					onMouseEnter={() => showAbout(`Editor Tab Size : ${codeTabSize}`)}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<MdOutlineKeyboardTab />
 					<span>Tab Size: {codeTabSize}</span>
-					{isHovered4 && (
-						<FooterTooltip content={`Editor Tab Size : ${codeTabSize}`} />
-					)}
 				</div>
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered5(true)}
-					onMouseLeave={() => setIsHovered5(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
+					onMouseEnter={() => showAbout(`Code Font Size : ${codeFontSize}`)}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<BiFontSize />
 					<span>Code Font Size: {codeFontSize}</span>
-					{isHovered5 && (
-						<FooterTooltip content={`Code Font Size : ${codeFontSize}`} />
-					)}
 				</div>
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered6(true)}
-					onMouseLeave={() => setIsHovered6(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
+					onMouseEnter={() => showAbout(`Code Area Placeholder : ${holder}`)}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<PiPlaceholder />
 					<span>placeholder: {holder ? holder : "''"}</span>
-					{isHovered6 && (
-						<FooterTooltip content={`Code Area Placeholder : ${holder}`} />
-					)}
 				</div>
 			</div>
 			<div className="flex items-center gap-3">
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered7(true)}
-					onMouseLeave={() => setIsHovered7(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
+					onMouseEnter={() =>
+						showAbout(
+							`Enabled editor settings {${lineNo ? "line-nos" : ""}${
+								closeBrackets ? ", auto-bracket" : ""
+							}${foldGut ? ", fold-gutter" : ""}}`
+						)
+					}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<IoCheckmarkDone />
 					<span>
@@ -121,27 +111,15 @@ const EditorFooter = () => {
 							closeBrackets ? ", auto-bracket" : ""
 						}${foldGut ? ", fold-gutter" : ""}}`}
 					</span>
-					{isHovered7 && (
-						<FooterTooltip
-							content={`Enabled Code Editor Settings`}
-							classes={"right-0 -top-[2.1rem]"}
-						/>
-					)}
 				</div>
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer"
-					onMouseEnter={() => setIsHovered8(true)}
-					onMouseLeave={() => setIsHovered8(false)}
+					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer w-content"
+					onMouseEnter={() => showAbout(`Notifications`)}
+					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<div className="min-h-full">
 						<VscBellDot size={14} />
 					</div>
-					{isHovered8 && (
-						<FooterTooltip
-							content={`Notifications`}
-							classes={"right-0 -top-[2.5rem]"}
-						/>
-					)}
 				</div>
 			</div>
 		</div>

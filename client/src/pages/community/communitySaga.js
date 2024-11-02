@@ -20,8 +20,8 @@ function* workDetailingSagas(action) {
 	const id = action.payload.id;
 	const isProject = action.payload.isProject;
 	const url = isProject
-		? `${import.meta.env.VITE_REACT_APP_API_URL}/projects/${id}`
-		: `${import.meta.env.VITE_REACT_APP_API_URL}/posts/${id}`;
+		? `${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/projects/${id}`
+		: `${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/posts/${id}`;
 	try {
 		const response = yield call(
 			axios.get,
@@ -57,8 +57,8 @@ function* workCommentSaga(action) {
 	const isProject = action.payload.isProject;
 	const id = action.payload.to;
 	let url = isProject
-		? `${import.meta.env.VITE_REACT_APP_API_URL}/projects/${id}/comments`
-		: `${import.meta.env.VITE_REACT_APP_API_URL}/posts/${id}/comments`;
+		? `${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/projects/${id}/comments`
+		: `${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/posts/${id}/comments`;
 
 	try {
 		yield put(resetNotifier());
@@ -90,12 +90,12 @@ export function* watchCommentSagas() {
 function* workLikeSagas(action) {
 	const isProject = action.payload.isProject;
 	const url = isProject
-		? `${import.meta.env.VITE_REACT_APP_API_URL}/projects/${
+		? `${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/projects/${
 				action.payload.type
 		  }/${action.payload.to}`
-		: `${import.meta.env.VITE_REACT_APP_API_URL}/posts/${action.payload.type}/${
-				action.payload.to
-		  }`;
+		: `${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/posts/${
+				action.payload.type
+		  }/${action.payload.to}`;
 	try {
 		const response = yield call(
 			axios.patch,

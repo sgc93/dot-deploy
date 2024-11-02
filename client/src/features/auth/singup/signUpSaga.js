@@ -9,7 +9,7 @@ function* workSignUpSaga(action) {
 	try {
 		const response = yield call(
 			axios.post,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/users/signup`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/users/signup`,
 			action.payload,
 			{ withCredentials: true }
 		);

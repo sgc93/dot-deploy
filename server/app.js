@@ -13,16 +13,18 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-// Define allowed frontend origin
-const frontendOrigin = "https://dot-code-nu.vercel.app";
+const frontendOrigin = "http://localhost:5173";
 
-// Configure CORS to allow requests from your frontend origin
-app.use(
-	cors({
-		origin: frontendOrigin,
-		credentials: true,
-	})
-);
+// middlewares
+app.use(cors({ origin: frontendOrigin, credentials: true }));
+
+app.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", frontendOrigin);
+	res.header("Access-Control-Allow-Credentials", "true");
+	res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	next();
+});
 
 // Optionally, add more headers if needed
 app.use((req, res, next) => {
@@ -39,12 +41,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use("/", (req, res, next) =>
-	res.status(200).json({
-		status: success,
-		message: "hi there",
-	})
-);
 app.use("/api/v1/projects", projectRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/comments", commentRoute);

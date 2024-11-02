@@ -21,7 +21,7 @@ function* workSearchSaga(action) {
 	try {
 		const response = yield call(
 			axios.get,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/search${url}`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/search${url}`,
 			{
 				withCredentials: true,
 			}

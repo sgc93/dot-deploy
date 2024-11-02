@@ -15,7 +15,9 @@ function* workPostDeleteSaga(action) {
 	try {
 		yield call(
 			axios.delete,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/posts/${action.payload.id}`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/posts/${
+				action.payload.id
+			}`,
 			action.payload,
 			{
 				withCredentials: true,
@@ -44,7 +46,9 @@ function* workPostUpdateSaga(action) {
 	try {
 		yield call(
 			axios.patch,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/posts/${action.payload.id}`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/posts/${
+				action.payload.id
+			}`,
 			action.payload.data,
 			{
 				withCredentials: true,
@@ -73,7 +77,7 @@ function* workPostCreateSaga(action) {
 	try {
 		yield call(
 			axios.post,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/posts`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/posts`,
 			action.payload,
 			{
 				withCredentials: true,
