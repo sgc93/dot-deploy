@@ -16,7 +16,7 @@ const app = express();
 const frontendOrigin = process.env.PROD_CLIENT;
 
 // middlewares
-app.use(cors({ origin: frontendOrigin, credentials: true }));
+app.use(cors({ origin: frontendOrigin, credentials: true, allowedHeaders: ['Content-Type', 'Authorization'] }));
 
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", frontendOrigin);
