@@ -23,6 +23,7 @@ function* workUserDataSagas(action) {
 
 		yield put(userDataSuccess(response.data.data.doc));
 	} catch (error) {
+		console.log(error);
 		const message = error.response
 			? error.response.data
 				? error.response.data.message
