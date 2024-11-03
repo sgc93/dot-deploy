@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-const frontendOrigin = "https://dot-code-nu.vercel.app";
+const frontendOrigin = process.env.PROD_CLIENT;
 
 // middlewares
 app.use(cors({ origin: frontendOrigin, credentials: true }));
