@@ -95,6 +95,8 @@ exports.protect = catchAsync(async (req, res, next) => {
 		token = req.cookies.jwt;
 	}
 
+	console.log(token);
+
 	if (!token) {
 		return next(new AppError("token expired, please re-login!", 401));
 	}
