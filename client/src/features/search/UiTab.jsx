@@ -23,7 +23,7 @@ const UiTab = ({ tag, handleTagging }) => {
 				>
 					Ui Components
 				</span>{" "}
-				<span className="text-slate-500 hidden sm:flex">
+				<span className="text-slate-500 hidden sm:inline">
 					Ready to use ui-components built{" "}
 					<span
 						className={`${

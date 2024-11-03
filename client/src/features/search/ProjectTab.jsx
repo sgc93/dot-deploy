@@ -23,7 +23,7 @@ const ProjectTab = ({ tag, handleTagging }) => {
 				>
 					Projects
 				</span>
-				<span className="text-slate-500 hidden sm:flex">
+				<span className="text-slate-500 hidden sm:inline">
 					Either{" "}
 					<span
 						className={`${

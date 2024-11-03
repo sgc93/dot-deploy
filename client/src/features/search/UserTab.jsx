@@ -23,7 +23,7 @@ const UserTab = ({ tag, handleTagging }) => {
 				>
 					Users
 				</span>
-				<span className="text-slate-500 hidden sm:flex">
+				<span className="text-slate-500 hidden sm:inline">
 					Search and visit{" "}
 					<span
 						className={`${
