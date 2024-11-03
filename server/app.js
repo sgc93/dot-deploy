@@ -15,23 +15,23 @@ const app = express();
 
 const frontendOrigin = process.env.PROD_CLIENT;
 
-// middlewares
-app.use(cors({ origin: frontendOrigin, credentials: true, allowedHeaders: ['Content-Type', 'Authorization'] }));
+// CORS configuration
+const corsOptions = {
+	origin: frontendOrigin,
+	credentials: true,
+	allowedHeaders: ["Content-Type", "Authorization"],
+	methods: ["GET", "POST", "PATCH", "DELETE"],
+};
 
-app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", frontendOrigin);
-	res.header("Access-Control-Allow-Credentials", "true");
-	res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-	next();
-});
+// Use the CORS middleware
+app.use(cors(corsOptions));
 
-// middlewares
+// Other middlewares
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-// routes
+// Routes
 app.use("/api/v1/projects", projectRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/comments", commentRoute);
@@ -39,11 +39,12 @@ app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/search", searchRoute);
 app.use("/api/v1/latest", latestRoute);
 
+// Handle undefined routes
 app.all("*", (req, res, next) =>
 	next(new AppError(`Can't find ${req.originalUrl} in this server`, 404))
 );
 
-// handle undefined routes
+// Global error handler
 app.use(globalErrorHandler);
 
 module.exports = app;
