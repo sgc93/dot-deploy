@@ -13,7 +13,7 @@ function* workProjectUpdate(action) {
 	try {
 		const response = yield call(
 			axios.patch,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/projects/${
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/projects/${
 				action.payload._id
 			}`,
 			action.payload,

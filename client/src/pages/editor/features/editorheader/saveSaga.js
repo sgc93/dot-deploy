@@ -9,7 +9,7 @@ function* workSaveSaga(action) {
 	try {
 		const response = yield call(
 			axios.post,
-			`${import.meta.env.VITE_REACT_APP_API_URL}/projects`,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/projects`,
 			action.payload,
 			{
 				withCredentials: true,

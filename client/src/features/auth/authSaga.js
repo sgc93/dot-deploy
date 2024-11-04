@@ -10,7 +10,7 @@ import {
 	userDataSuccess,
 } from "./authSlice";
 
-function* workUserDataSagas(action) {
+function* workUserDataSagas() {
 	try {
 		const response = yield call(
 			axios.get,
@@ -31,7 +31,7 @@ function* workUserDataSagas(action) {
 			: error.message;
 		yield put(userDataFailure(message));
 		yield put(resetNotifier());
-		yield put(setNotifier({ error: "Un able to fetch user data" }));
+		yield put(setNotifier({ error: "Unable to fetch user data" }));
 	}
 }
 
