@@ -13,20 +13,27 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
-const frontendOrigin = process.env.PROD_CLIENT;
+const frontedOrigin = process.env.PROD_CLIENT;
 
-// CORS configuration
-const corsOptions = {
-	origin: frontendOrigin,
-	credentials: true,
-	allowedHeaders: ["Content-Type", "Authorization"],
-	methods: ["GET", "POST", "PATCH", "DELETE"],
-};
+// middlewares
+app.use(
+	cors({
+		origin: frontedOrigin,
+		credentials: true,
+		allowedHeaders: ["Content-Type", "Authorization"],
+	})
+);
 
-// Use the CORS middleware
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+	res.header("Access-Control-Allow-Origin", frontedOrigin);
+	res.header("Access-Control-Allow-Credentials", "true");
+	res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+	res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+	next();
+});
 
 // Other middlewares
+// Use the CORS middleware
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
