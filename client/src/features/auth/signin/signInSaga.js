@@ -15,7 +15,12 @@ function* workSignInSaga(action) {
 				withCredentials: true,
 			}
 		);
-		yield put(signInSuccess(response.data.data.user));
+		yield put(
+			signInSuccess({
+				data: response.data.data.user,
+				token: response.data.token,
+			})
+		);
 	} catch (error) {
 		const message = error.response
 			? error.response.data

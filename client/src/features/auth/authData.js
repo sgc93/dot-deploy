@@ -1,4 +1,8 @@
-export const storeUserData = (userData) => {
+import Cookies from "js-cookie";
+
+export const storeUserData = (user) => {
+	const userData = user.data;
+	const jwt = user.token;
 	const expiration = Date.now() + 24 * 60 * 60 * 1000;
 	const data = {
 		loginAt: Date.now(),
@@ -10,14 +14,21 @@ export const storeUserData = (userData) => {
 		avatarUrl: userData.avatarUrl,
 	};
 
+	Cookies.set("jwt", jwt, { expires: 1 });
+
 	localStorage.setItem("userData", JSON.stringify(data));
 };
 
-export const getUserData = () => {
+export const getUserData = (isToken = false) => {
 	const storedData = JSON.parse(localStorage.getItem("userData"));
+	const token = Cookies.get("jwt");
 
-	if (storedData && storedData.expiry > Date.now()) {
-		return storedData;
+	if (storedData && token && storedData.expiry > Date.now()) {
+		if (isToken) {
+			return token;
+		} else {
+			return storedData;
+		}
 	}
 
 	localStorage.removeItem("userData");

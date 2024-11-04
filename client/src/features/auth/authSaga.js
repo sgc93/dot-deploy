@@ -1,6 +1,7 @@
 import axios from "axios";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
+import { getUserData } from "./authData";
 import {
 	logOutFailure,
 	logOutRequest,
@@ -19,8 +20,6 @@ function* workUserDataSagas() {
 				withCredentials: true,
 			}
 		);
-		console.log(response);
-
 		yield put(userDataSuccess(response.data.data.doc));
 	} catch (error) {
 		console.log(error);
@@ -40,6 +39,8 @@ export function* watchUserDataSagas() {
 }
 
 function* workLogoutSaga() {
+	const token = getUserData(true);
+
 	try {
 		yield put(resetNotifier());
 		yield put(setNotifier({ loading: "logging out ..." }));
@@ -49,6 +50,9 @@ function* workLogoutSaga() {
 			{},
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 		yield put(resetNotifier());
