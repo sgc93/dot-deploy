@@ -7,18 +7,6 @@ import { VscBellDot } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
 
-const FooterTooltip = ({ content, classes }) => {
-	return (
-		<div
-			className={`absolute z-[1001] w-max bg-n-14 border-[1px] border-[#555] px-2 py-1 font-sans text-base text-slate-200 flex ${
-				classes ? classes : "-top-[2.1rem]"
-			}`}
-		>
-			{content}{" "}
-		</div>
-	);
-};
-
 const EditorFooter = () => {
 	const { lineNo, foldGut, closeBrackets, holder, codeFontSize, codeTabSize } =
 		useSelector((state) => state.setting);
@@ -29,7 +17,7 @@ const EditorFooter = () => {
 
 	const showAbout = (content) => {
 		dispatch(resetNotifier());
-		dispatch(setNotifier({ notification: content }));
+		dispatch(setNotifier(content));
 	};
 
 	return (
@@ -40,7 +28,7 @@ const EditorFooter = () => {
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
 					onMouseEnter={() =>
-						showAbout(`Current Project Type : ${project.type}`)
+						showAbout({ normal: `Current Project Type : ${project.type}` })
 					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
@@ -49,7 +37,7 @@ const EditorFooter = () => {
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
 					onMouseEnter={() =>
-						showAbout(`Language Mode : ${currLng.toUpperCase()}`)
+						showAbout({ normal: `Language Mode : ${currLng.toUpperCase()}` })
 					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
@@ -58,7 +46,9 @@ const EditorFooter = () => {
 				</div>
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
-					onMouseEnter={() => showAbout(`Errors: ${logs.length}`)}
+					onMouseEnter={() =>
+						showAbout({ error: `Editor Errors: ${logs.length}` })
+					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<span className={`${logs.length > 0 ? "text-color-3" : ""}`}>
@@ -69,7 +59,9 @@ const EditorFooter = () => {
 			<div className="flex items-center gap-3 w-max">
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
-					onMouseEnter={() => showAbout(`Editor Tab Size : ${codeTabSize}`)}
+					onMouseEnter={() =>
+						showAbout({ normal: `Editor Tab Size : ${codeTabSize}` })
+					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<MdOutlineKeyboardTab />
@@ -77,7 +69,9 @@ const EditorFooter = () => {
 				</div>
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
-					onMouseEnter={() => showAbout(`Code Font Size : ${codeFontSize}`)}
+					onMouseEnter={() =>
+						showAbout({ normal: `Code Font Size : ${codeFontSize}` })
+					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<BiFontSize />
@@ -85,7 +79,11 @@ const EditorFooter = () => {
 				</div>
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
-					onMouseEnter={() => showAbout(`Code Area Placeholder : ${holder}`)}
+					onMouseEnter={() =>
+						showAbout({
+							normal: `Code Area Placeholder : ${holder ? holder : "''"}`,
+						})
+					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<PiPlaceholder />
@@ -96,11 +94,12 @@ const EditorFooter = () => {
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
 					onMouseEnter={() =>
-						showAbout(
-							`Enabled editor settings {${lineNo ? "line-nos" : ""}${
-								closeBrackets ? ", auto-bracket" : ""
-							}${foldGut ? ", fold-gutter" : ""}}`
-						)
+						showAbout({
+							success: `Enabled Editor Settings: 
+							{ ${lineNo ? "Line-nos" : ""} \n ${closeBrackets ? ", Auto-bracket" : ""} \n ${
+								foldGut ? ", Fold-gutter " : " "
+							}}`,
+						})
 					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
@@ -114,7 +113,11 @@ const EditorFooter = () => {
 				</div>
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer w-content"
-					onMouseEnter={() => showAbout(`Notifications`)}
+					onMouseEnter={() =>
+						showAbout({
+							notification: `Notifications: you have no notifications`,
+						})
+					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
 					<div className="min-h-full">
