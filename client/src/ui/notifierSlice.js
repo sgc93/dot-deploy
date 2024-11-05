@@ -6,6 +6,7 @@ const initialState = {
 	success: null,
 	warning: null,
 	notification: null,
+	normal: null,
 };
 
 const notifierSlice = createSlice({
@@ -18,6 +19,7 @@ const notifierSlice = createSlice({
 			state.success = action.payload.success;
 			state.warning = action.payload.warning;
 			state.notification = action.payload.notification;
+			state.normal = action.payload.normal;
 		},
 		resetNotifier: (state) => {
 			state.loading = initialState.loading;
@@ -25,6 +27,7 @@ const notifierSlice = createSlice({
 			state.success = initialState.success;
 			state.warning = initialState.warning;
 			state.notification = initialState.notification;
+			state.normal = initialState.normal;
 		},
 	},
 });

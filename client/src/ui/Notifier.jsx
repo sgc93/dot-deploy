@@ -1,16 +1,40 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap/all";
 import { useEffect } from "react";
+import { BiCheckDouble, BiSolidError } from "react-icons/bi";
 import { GoDot } from "react-icons/go";
+import { IoWarningOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
+import { VscBellDot } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { resetNotifier } from "./notifierSlice";
 
-const Notifier = () => {
-	const { loading, error, success, warning, notification } = useSelector(
-		(state) => state.notifier
+const NotifierContent = ({ content, boxClasses, btnClasses, children }) => {
+	const dispatch = useDispatch();
+	const closeNotifier = () => dispatch(resetNotifier());
+
+	return (
+		<div
+			id="notifier"
+			className={`${boxClasses} absolute z-[1100] top-3 left-1/2 max-w-[99dvw] text-wrap text-center -translate-x-1/2 flex items-start gap-5 bg-n-14 px-4 py-[6px] rounded-md border-2 shadow-md shadow-slate-950 font-semibold tracking-wider font-sans overflow-clip`}
+		>
+			<div className="mt-2">{children}</div>
+			<span className=" sm:text-lg text-left">{content}</span>
+			<button
+				className={`${btnClasses} text-xl bg-opacity-30 rounded-full p-[1px] mt-1 -mr-1 transition-all duration-500 bg-slate-700 cursor-pointer hover:bg-opacity-100`}
+				onClick={() => closeNotifier()}
+			>
+				<MdClose />
+			</button>
+		</div>
 	);
-	const isOpened = loading || error || success || warning || notification;
+};
+
+const Notifier = () => {
+	const { loading, error, success, warning, notification, normal } =
+		useSelector((state) => state.notifier);
+	const isOpened =
+		loading || error || success || warning || notification || normal;
 	const dispatch = useDispatch();
 
 	useGSAP(() => {
@@ -41,81 +65,69 @@ const Notifier = () => {
 		return () => clearTimeout(timeout);
 	}, [isOpened, dispatch, loading]);
 
-	const closeNotifier = () => dispatch(resetNotifier());
-
 	if (loading) {
 		return (
-			<div
-				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-5 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-color-1 text-color-1 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
+			<NotifierContent
+				content={loading}
+				boxClasses={"border-blue-300 text-blue-300"}
+				btnClasses={"text-blue-300 hover:text-blue-500"}
 			>
 				<div className="flex items-center gap-1">
 					<GoDot className="loadingNotifier" />
 					<GoDot className="loadingNotifier" />
 					<GoDot className="loadingNotifier" />
 				</div>
-				<span className=" text-lg">{loading}</span>
-				<button
-					className="text-xl  hover:bg-color-1 hover:bg-opacity-30 rounded-full p-[1px] -mr-1 transition-all duration-500 hover:text-red-500 bg-slate-800"
-					onClick={() => closeNotifier()}
-				>
-					<MdClose />
-				</button>
-			</div>
+			</NotifierContent>
 		);
 	} else if (error) {
 		return (
-			<div
-				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-red-500 text-red-500 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
+			<NotifierContent
+				content={error}
+				boxClasses={"border-red-400 text-red-400"}
+				btnClasses={"text-red-400 hover:text-red-300"}
 			>
-				<span className=" text-lg">{error}</span>
-				<button
-					className="text-xl  hover:bg-red-500 hover:bg-opacity-30 rounded-full p-[1px] -mr-1 transition-all duration-500 hover:text-red-500 bg-slate-800"
-					onClick={() => closeNotifier()}
-				>
-					<MdClose />
-				</button>
-			</div>
+				<BiSolidError />
+			</NotifierContent>
 		);
 	} else if (success) {
 		return (
-			<div
-				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-green-500 text-green-500 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
+			<NotifierContent
+				content={success}
+				boxClasses={"border-green-300 text-green-300"}
+				btnClasses={"text-green-300 hover:text-green-500"}
 			>
-				<span className=" text-lg">{success}</span>
-				<button
-					className="text-xl  hover:bg-green-500 hover:bg-opacity-30 rounded-full p-[1px] -mr-1 transition-all duration-500 hover:text-red-500 bg-slate-800"
-					onClick={() => closeNotifier()}
-				>
-					<MdClose />
-				</button>
-			</div>
+				<BiCheckDouble size={23} className="-mt-1" />
+			</NotifierContent>
 		);
 	} else if (warning) {
 		return (
-			<div
-				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center -translate-x-1/2 flex items-center gap-3 bg-n-13 px-4 py-[6px] rounded-full border-[1px] border-yellow-500 text-yellow-500 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
+			<NotifierContent
+				content={warning}
+				boxClasses={"border-orange-300 text-orange-300"}
+				btnClasses={"text-orange-300 hover:text-orange-500"}
 			>
-				<span className=" text-lg">{warning}</span>
-				<button
-					className="text-xl  hover:bg-yellow-500 hover:bg-opacity-30 rounded-full p-[1px] -mr-1 transition-all duration-500 hover:text-red-500 bg-slate-800"
-					onClick={() => closeNotifier()}
-				>
-					<MdClose />
-				</button>
-			</div>
+				<IoWarningOutline />
+			</NotifierContent>
 		);
 	} else if (notification) {
 		return (
-			<div
-				id="notifier"
-				className={`absolute z-[1100] top-3 left-1/2 w-max text-wrap text-center text-slate-300 -translate-x-1/2 flex items-center gap-3 bg-n-14 px-4 py-[6px] rounded-md border-2 border-[#555] shadow-md shadow-slate-950 text-color-5 font-semibold tracking-wider font-sans max-w-full overflow-clip`}
+			<NotifierContent
+				content={notification}
+				boxClasses={"border-color-5 text-color-5"}
+				btnClasses={"text-color-5 hover:text-color-5"}
 			>
-				<span className=" text-lg">{notification}</span>
-			</div>
+				<VscBellDot />
+			</NotifierContent>
+		);
+	} else if (normal) {
+		return (
+			<NotifierContent
+				content={normal}
+				boxClasses={"border-[#555] text-slate-300"}
+				btnClasses={"text-slate-300 hover:text-slate-50"}
+			>
+				<img src="/dot.svg" width={15} className=" grayscale" />
+			</NotifierContent>
 		);
 	}
 };
