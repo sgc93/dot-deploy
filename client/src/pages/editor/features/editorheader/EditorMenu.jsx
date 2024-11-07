@@ -14,7 +14,6 @@ import { TbCopy, TbCut, TbHelp } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useCode } from "../../../../hooks/useCode";
-import { useEditorOpen } from "../../../../hooks/useEditorOpen";
 import LngTab from "../../../../ui/LngTab";
 import {
 	copyCode,
@@ -23,7 +22,12 @@ import {
 } from "../../../../utils/editorHelpers";
 import { getLngInfo } from "../../../../utils/helpers";
 import { supportedLng } from "../../../../utils/supportedLng";
-import { handleSideMenu, handleTerminal } from "../../editorSlice";
+import {
+	handleCreatingModal,
+	handleSideMenu,
+	handleTerminal,
+	setNewProject,
+} from "../../editorSlice";
 import { selectMenu } from "../sidebar/sidebarSlice";
 import Publish from "./Publish";
 
@@ -95,10 +99,11 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 
 	const navigateTo = useNavigate();
 	const updateCode = useCode();
-	const openEditor = useEditorOpen();
+	const dispatch = useDispatch();
 
 	const handleClick = (type, lngName) => {
-		openEditor(type, lngName);
+		dispatch(setNewProject({ type, lngName }));
+		dispatch(handleCreatingModal(true));
 		selectAction();
 	};
 
