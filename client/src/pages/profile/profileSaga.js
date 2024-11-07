@@ -1,5 +1,6 @@
 import axios from "axios";
 import { call, put, takeLatest } from "redux-saga/effects";
+import { getUserData } from "../../features/auth/authData";
 import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
 import {
 	deleteItemRequest,
@@ -8,7 +9,38 @@ import {
 	userProfileSuccess,
 } from "./profileSlice";
 
+function* workUpdateProfile(action) {
+	try {
+		const response = yield call(
+			axios.patch,
+			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/projects/${
+				action.payload._id
+			}`,
+			action.payload,
+			{
+				withCredentials: true,
+			}
+		);
+		// yield put(updateProjectSuccess());
+		// yield put(setSavedProject(response.data.updatedDoc));
+		yield put(setNotifier({ success: "Your change is saved successfully!" }));
+	} catch (error) {
+		const message = error.response
+			? error.response.data
+				? error.response.data.message
+				: error.message
+			: error.message;
+		// yield put(updateProjectFailure(message));
+		yield put(setNotifier({ error: error }));
+	}
+}
+
+export function* watchUpdateProfile() {
+	yield takeLatest("", workUpdateProfile);
+}
+
 function* workItemDeleteSaga(action) {
+	const token = getUserData(true);
 	const itemName = action.payload.itemName;
 	const id = action.payload.id;
 	let url = `${
@@ -20,15 +52,16 @@ function* workItemDeleteSaga(action) {
 		yield put(setNotifier({ loading: `Deleting ${itemName} ...` }));
 		const response = yield call(axios.delete, url, {
 			withCredentials: true,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
 		});
 
-		console.log(response);
 		const message = response.data.message;
 		yield put(deleteItemSuccess());
 		yield put(resetNotifier());
 		yield put(setNotifier({ success: message }));
 	} catch (error) {
-		console.log(error);
 		const message = error.response
 			? error.response.data
 				? error.response.data.message

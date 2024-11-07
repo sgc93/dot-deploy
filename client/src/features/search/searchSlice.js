@@ -21,12 +21,6 @@ const searchSlice = createSlice({
 			state.posts = action.payload.posts;
 			state.users = action.payload.users;
 			state.isLoading = false;
-			console.log(
-				state.isLoading,
-				state.posts.length,
-				state.projects.length,
-				state.users.length
-			);
 		},
 		searchFailure: (state, action) => {
 			state.isLoading = false;

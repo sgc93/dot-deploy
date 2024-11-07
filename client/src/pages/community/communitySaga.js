@@ -1,5 +1,6 @@
 import axios from "axios";
 import { call, put, takeLatest } from "redux-saga/effects";
+import { getUserData } from "../../features/auth/authData";
 import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
 import {
 	commentFailure,
@@ -17,6 +18,7 @@ import {
 } from "./communitySlice";
 
 function* workDetailingSagas(action) {
+	const token = getUserData(true);
 	const id = action.payload.id;
 	const isProject = action.payload.isProject;
 	const url = isProject
@@ -29,6 +31,9 @@ function* workDetailingSagas(action) {
 			{},
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 		const data = response.data.data.doc;
@@ -54,6 +59,7 @@ export function* watchDetailingSagas() {
 }
 
 function* workCommentSaga(action) {
+	const token = getUserData(true);
 	const isProject = action.payload.isProject;
 	const id = action.payload.to;
 	let url = isProject
@@ -65,6 +71,9 @@ function* workCommentSaga(action) {
 		yield put(setNotifier({ loading: "uploading comment ..." }));
 		const response = yield call(axios.post, url, action.payload.comment, {
 			withCredentials: true,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
 		});
 
 		const message = response.data.message;
@@ -88,6 +97,7 @@ export function* watchCommentSagas() {
 }
 
 function* workLikeSagas(action) {
+	const token = getUserData(true);
 	const isProject = action.payload.isProject;
 	const url = isProject
 		? `${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/projects/${
@@ -103,6 +113,9 @@ function* workLikeSagas(action) {
 			{},
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 

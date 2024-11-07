@@ -1,5 +1,6 @@
 import axios from "axios";
 import { call, put, takeLatest } from "redux-saga/effects";
+import { getUserData } from "../../features/auth/authData";
 import { setNotifier } from "../../ui/notifierSlice";
 import { setSavedProject } from "./features/editorheader/saveSlice";
 import {
@@ -9,7 +10,7 @@ import {
 } from "./projectSlice";
 
 function* workProjectUpdate(action) {
-	console.log(action.payload);
+	const token = getUserData(true);
 	try {
 		const response = yield call(
 			axios.patch,
@@ -19,6 +20,9 @@ function* workProjectUpdate(action) {
 			action.payload,
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 		yield put(updateProjectSuccess());

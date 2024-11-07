@@ -12,17 +12,20 @@ import {
 } from "./authSlice";
 
 function* workUserDataSagas() {
+	const token = getUserData(true);
 	try {
 		const response = yield call(
 			axios.get,
 			`${import.meta.env.VITE_REACT_APP_API_URL}/api/v1/users/me`,
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 		yield put(userDataSuccess(response.data.data.doc));
 	} catch (error) {
-		console.log(error);
 		const message = error.response
 			? error.response.data
 				? error.response.data.message

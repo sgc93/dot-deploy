@@ -28,7 +28,6 @@ function* workSearchSaga(action) {
 		);
 		if (tag === "all") {
 			yield put(searchSuccess(response.data.data));
-			console.log(response.data.data);
 		} else if (tag === "post") {
 			yield put(
 				searchSuccess({

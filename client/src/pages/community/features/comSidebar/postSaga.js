@@ -1,5 +1,6 @@
 import axios from "axios";
 import { call, put, takeLatest } from "redux-saga/effects";
+import { getUserData } from "../../../../features/auth/authData";
 import { setNotifier } from "../../../../ui/notifierSlice";
 import { setChangeStatus } from "../../../profile/profileSlice";
 import { changeMade } from "../../communitySlice";
@@ -12,6 +13,8 @@ import {
 } from "./postSlice";
 
 function* workPostDeleteSaga(action) {
+	const token = getUserData(true);
+
 	try {
 		yield call(
 			axios.delete,
@@ -21,6 +24,9 @@ function* workPostDeleteSaga(action) {
 			action.payload,
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 
@@ -43,6 +49,7 @@ export function* watchPostDeleteSagas() {
 }
 
 function* workPostUpdateSaga(action) {
+	const token = getUserData(true);
 	try {
 		yield call(
 			axios.patch,
@@ -52,6 +59,9 @@ function* workPostUpdateSaga(action) {
 			action.payload.data,
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 
@@ -74,6 +84,7 @@ export function* watchPostUpdateSagas() {
 	yield takeLatest(updatePostRequest.type, workPostUpdateSaga);
 }
 function* workPostCreateSaga(action) {
+	const token = getUserData(true);
 	try {
 		yield call(
 			axios.post,
@@ -81,6 +92,9 @@ function* workPostCreateSaga(action) {
 			action.payload,
 			{
 				withCredentials: true,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			}
 		);
 
