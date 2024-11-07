@@ -14,6 +14,7 @@ const initialState = {
 	newProName: "",
 	isCreatingModalMinimized: false,
 	isPublishModalMinimized: false,
+	editorNotifications: [],
 };
 
 export const editorSlice = createSlice({
@@ -64,13 +65,23 @@ export const editorSlice = createSlice({
 		minimizeCreatingModal: (state, action) => {
 			state.isCreatingModalMinimized = true;
 			state.newProName = action.payload;
+			state.editorNotifications = [
+				...state.editorNotifications,
+				"You have on-process new project",
+			];
 		},
 		maximizeCreatingModal: (state) => {
 			state.isCreatingModalMinimized = false;
+			state.editorNotifications = state.editorNotifications.filter(
+				(noti) => noti !== "You have on-process new project"
+			);
 		},
 		resetCreatingModal: (state) => {
 			state.isCreatingModalMinimized = false;
 			state.newProName = "";
+		},
+		resetNotifications: (state) => {
+			state.editorNotifications = [];
 		},
 	},
 });
@@ -90,6 +101,7 @@ export const {
 	minimizeCreatingModal,
 	maximizeCreatingModal,
 	resetCreatingModal,
+	resetNotifications,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
