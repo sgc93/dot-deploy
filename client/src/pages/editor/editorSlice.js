@@ -9,8 +9,11 @@ const initialState = {
 	searchPanel: false,
 	isOutput: true,
 	logs: [],
-	newProType: null,
-	newProLngName: null,
+	newProType: "ui",
+	newProLngName: "html",
+	newProName: "",
+	isCreatingModalMinimized: false,
+	isPublishModalMinimized: false,
 };
 
 export const editorSlice = createSlice({
@@ -58,6 +61,17 @@ export const editorSlice = createSlice({
 		setOutputTerminal: (state, action) => {
 			state.isOutput = action.payload;
 		},
+		minimizeCreatingModal: (state, action) => {
+			state.isCreatingModalMinimized = true;
+			state.newProName = action.payload;
+		},
+		maximizeCreatingModal: (state) => {
+			state.isCreatingModalMinimized = false;
+		},
+		resetCreatingModal: (state) => {
+			state.isCreatingModalMinimized = false;
+			state.newProName = "";
+		},
 	},
 });
 
@@ -73,6 +87,9 @@ export const {
 	resetLogs,
 	setOutputTerminal,
 	setNewProject,
+	minimizeCreatingModal,
+	maximizeCreatingModal,
+	resetCreatingModal,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
