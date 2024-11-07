@@ -14,6 +14,37 @@ import {
 	Tooltip,
 } from "../ui/SampleUIs";
 
+export const overridingScript = `
+	<script>
+        (function() {
+          const originalConsole = window.console;
+          const messages = [];
+          
+          // Override console.log and console.error to capture output
+          window.console = {
+            log: (message) => {
+              messages.push({ type: 'log', message });
+              originalConsole.log(message);
+              window.parent.postMessage({ type: 'log', message }, '*');
+            },
+            error: (message) => {
+              messages.push({ type: 'error', message });
+              originalConsole.error(message);
+              window.parent.postMessage({ type: 'error', message }, '*');
+            },
+            ...originalConsole,
+          };
+
+          // Capture uncaught errors
+          window.onerror = (message, source, lineno, colno, error) => {
+            const errorMessage = { message, source, lineno, colno, error };
+            messages.push({ type: 'error', message: errorMessage });
+            window.parent.postMessage({ type: 'error', message: errorMessage }, '*');
+          };
+        })();
+      </script>
+`;
+
 export const navLinks = [
 	{
 		href: "community",
