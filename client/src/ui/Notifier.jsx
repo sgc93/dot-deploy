@@ -1,17 +1,20 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap/all";
 import { useEffect } from "react";
-import { BiCheckDouble, BiSolidError } from "react-icons/bi";
+import { BiBell, BiCheckDouble, BiSolidError } from "react-icons/bi";
 import { GoDot } from "react-icons/go";
 import { IoWarningOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
-import { VscBellDot } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
+import { resetNotifications } from "../pages/editor/editorSlice";
 import { resetNotifier } from "./notifierSlice";
 
 const NotifierContent = ({ content, boxClasses, btnClasses, children }) => {
 	const dispatch = useDispatch();
-	const closeNotifier = () => dispatch(resetNotifier());
+	const closeNotifier = () => {
+		dispatch(resetNotifier());
+		dispatch(resetNotifications());
+	};
 
 	return (
 		<div
@@ -31,6 +34,7 @@ const NotifierContent = ({ content, boxClasses, btnClasses, children }) => {
 };
 
 const Notifier = () => {
+	const { editorNotifications } = useSelector((state) => state.editor);
 	const { loading, error, success, warning, notification, normal } =
 		useSelector((state) => state.notifier);
 	const isOpened =
@@ -59,6 +63,7 @@ const Notifier = () => {
 		if (isOpened && !loading) {
 			timeout = setTimeout(() => {
 				dispatch(resetNotifier());
+				dispatch(resetNotifications());
 			}, 5000);
 		}
 
@@ -112,11 +117,22 @@ const Notifier = () => {
 	} else if (notification) {
 		return (
 			<NotifierContent
-				content={notification}
-				boxClasses={"border-color-5 text-color-5"}
+				content={editorNotifications.length === 0 && notification}
+				boxClasses={"border-color-5 text-color-5 "}
 				btnClasses={"text-color-5 hover:text-color-5"}
 			>
-				<VscBellDot />
+				<div className="flex items-start flex-col gap-1">
+					{editorNotifications.map((notif, index) => (
+						<div key={index} className="flex items-center gap-1">
+							<span>
+								<BiBell />
+							</span>
+							<span className="text-wrap border-b-[1px] bg-zinc-700 bg-opacity-10 border-[#555] px-2 py-1 rounded-sm">
+								{notif}
+							</span>
+						</div>
+					))}
+				</div>
 			</NotifierContent>
 		);
 	} else if (normal) {
