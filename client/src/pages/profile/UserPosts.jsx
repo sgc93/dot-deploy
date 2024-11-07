@@ -28,8 +28,10 @@ const Post = ({ post, isLoggedInUser }) => {
 
 	const detailPost = () => navigateTo(`/community/post/${post._id}`);
 
-	const handleDelete = () =>
+	const handleDelete = () => {
 		dispatch(deleteItemRequest({ itemName: "post", id: post._id }));
+		setIsDeleting(false);
+	};
 
 	return (
 		<div className="sd:w-2/3 flex flex-col gap-3 bg-slate-900 bg-opacity-70 border-[1px] border-slate-800 rounded-md p-3">

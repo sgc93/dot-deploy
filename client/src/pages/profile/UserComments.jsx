@@ -22,8 +22,10 @@ const Comment = ({ comment, isLoggedInUser }) => {
 
 	const detailOwner = () => navigateTo(`/profile/${comment.project.owner._id}`);
 
-	const handleDelete = () =>
+	const handleDelete = () => {
+		setIsDeleting(false);
 		dispatch(deleteItemRequest({ itemName: "comment", id: comment._id }));
+	};
 
 	return (
 		<div className="sd:w-2/3 flex flex-col gap-3 bg-slate-900 bg-opacity-70 border-[1px] border-slate-800 rounded-md p-3">
