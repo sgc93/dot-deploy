@@ -9,6 +9,8 @@ const initialState = {
 	searchPanel: false,
 	isOutput: true,
 	logs: [],
+	newProType: null,
+	newProLngName: null,
 };
 
 export const editorSlice = createSlice({
@@ -17,6 +19,10 @@ export const editorSlice = createSlice({
 	reducers: {
 		handleCreatingModal: (state, action) => {
 			state.isCreating = action.payload;
+		},
+		setNewProject: (state, action) => {
+			state.newProType = action.payload.type;
+			state.newProLngName = action.payload.lngName;
 		},
 		handleTerminal: (state, action) => {
 			state.showTerminal = action.payload;
@@ -66,6 +72,7 @@ export const {
 	updateLogs,
 	resetLogs,
 	setOutputTerminal,
+	setNewProject,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
