@@ -86,7 +86,6 @@ const DotCodeProfile = () => {
 	const navigateTo = useNavigate();
 	const projects = topProjects.length;
 	const dispatch = useDispatch();
-	console.log(topProjects);
 
 	useEffect(() => {
 		if (projects === 0) {
