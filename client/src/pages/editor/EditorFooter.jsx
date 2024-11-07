@@ -11,7 +11,7 @@ const EditorFooter = () => {
 	const { lineNo, foldGut, closeBrackets, holder, codeFontSize, codeTabSize } =
 		useSelector((state) => state.setting);
 	const { project, currLng } = useSelector((state) => state.project);
-	const { logs } = useSelector((state) => state.editor);
+	const { logs, editorNotifications } = useSelector((state) => state.editor);
 
 	const dispatch = useDispatch();
 
@@ -112,16 +112,21 @@ const EditorFooter = () => {
 					</span>
 				</div>
 				<div
-					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-700 hover:bg-opacity-70 px-2 rounded-full cursor-pointer w-content"
+					className="flex gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-1 py-1 rounded-md cursor-pointer w-max"
 					onMouseEnter={() =>
 						showAbout({
-							notification: `Notifications: you have no notifications`,
+							notification: `You have no notifications`,
 						})
 					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
-					<div className="min-h-full">
+					<div className="relative min-h-full flex">
 						<VscBellDot size={14} />
+						{editorNotifications.length > 0 && (
+							<div className="absolute left-4 bottom-[-5px] max-h-6 text-blue-400 rounded-full">
+								{editorNotifications.length}
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
