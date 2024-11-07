@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineEnter } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { TbMinus, TbSquare, TbX } from "react-icons/tb";
+import { TbMinimize, TbMinus, TbSquare, TbX } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditorOpen } from "../../hooks/useEditorOpen";
 import {
@@ -15,6 +15,7 @@ const EditorModal = () => {
 		(state) => state.editor
 	);
 	const [name, setName] = useState(newProName);
+	const [isExpanded, setIsExpanded] = useState(false);
 	const textareaRef = useRef();
 	const dispatch = useDispatch();
 	const openEditor = useEditorOpen();
@@ -45,10 +46,7 @@ const EditorModal = () => {
 		});
 	};
 
-	const maximizeModal = () => {
-		dispatch(handleCreatingModal(false));
-		dispatch(minimizeCreatingModal(name));
-	};
+	const maximizeModal = () => setIsExpanded((is) => !is);
 	const minimizeModal = () => {
 		dispatch(handleCreatingModal(false));
 		dispatch(minimizeCreatingModal(name));
@@ -60,7 +58,13 @@ const EditorModal = () => {
 
 	return (
 		<div className="absolute left-0 z-[100] w-full h-full flex justify-center backdrop-blur-sm">
-			<div className="flex flex-col w-[35rem] h-max min-h-[20rem] rounded-lg border-[1px] border-slate-700 overflow-hidden shadow-lg shadow-slate-900 mt-24">
+			<div
+				className={`flex flex-col ${
+					isExpanded
+						? "w-full h-full text-lg"
+						: "w-[35rem] h-max min-h-[20rem] mt-24"
+				} rounded-lg border-[1px] border-slate-700 overflow-hidden shadow-lg shadow-slate-900`}
+			>
 				<div className="flex items-center justify-between bg-gray-800 border-b-[1px] border-slate-700 px-2 py-[5px]">
 					<div className="flex items-center gap-2 text-slate-500 text-sm">
 						<img src="/dot.svg" alt="" width={15} className=" invert" />
@@ -75,7 +79,11 @@ const EditorModal = () => {
 								onClick: () => minimizeModal(),
 							},
 							{
-								icon: <TbSquare key={2} size={15} />,
+								icon: isExpanded ? (
+									<TbMinimize key={2} size={19} />
+								) : (
+									<TbSquare key={2} size={15} />
+								),
 								onClick: () => maximizeModal(),
 							},
 							{
