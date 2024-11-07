@@ -7,7 +7,6 @@ import { useEditorOpen } from "../../hooks/useEditorOpen";
 import { handleCreatingModal, setNewProject } from "./editorSlice";
 
 const EditorModal = () => {
-	const { project } = useSelector((state) => state.project);
 	const { newProLngName, newProType } = useSelector((state) => state.editor);
 	const [name, setName] = useState("");
 	const textareaRef = useRef();
