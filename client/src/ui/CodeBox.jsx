@@ -107,8 +107,10 @@ const CodeHeader = ({ project, code, setCode }) => {
 };
 
 const CodeBox = ({ project, style, height, width }) => {
+	const isSnippet = project.type === "snippet";
+
 	const [code, setCode] = useState(
-		project.type === "ui" ? project.code.html : project.code.code
+		isSnippet ? project.code.code : project.code.html
 	);
 
 	return (
