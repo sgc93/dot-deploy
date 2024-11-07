@@ -4,14 +4,16 @@ import { IoIosArrowForward } from "react-icons/io";
 import { TbMinus, TbSquare, TbX } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditorOpen } from "../../hooks/useEditorOpen";
+import { handleCreatingModal, setNewProject } from "./editorSlice";
 
 const EditorModal = () => {
 	const { project } = useSelector((state) => state.project);
+	const { newProLngName, newProType } = useSelector((state) => state.editor);
 	const [name, setName] = useState("");
 	const textareaRef = useRef();
 	const dispatch = useDispatch();
 	const openEditor = useEditorOpen();
-	const isSnippet = project.type === "snippet";
+	const isSnippet = newProType === "snippet";
 
 	useEffect(() => {
 		const handleSubmission = (event) => {
@@ -26,11 +28,30 @@ const EditorModal = () => {
 		return textareaRef.current.addEventListener("keydown", handleSubmission);
 	}, [name, dispatch]);
 
-	const toNext = () =>
-		openEditor("open", project.lngName, {
-			...project,
+	const toNext = () => {
+		const isSnippet = newProType === "snippet";
+
+		openEditor("open", newProLngName, {
 			name: name ? name : "Untitled",
+			type: newProType,
+			lngName: newProLngName,
+			code: isSnippet ? { code: "" } : { html: "", css: "", js: "" },
+			owner: {},
 		});
+	};
+
+	const minimizeModal = () => {
+		dispatch(handleCreatingModal(false));
+		dispatch(setNewProject({ type: null, lngName: null }));
+	};
+	const maximizeModal = () => {
+		dispatch(handleCreatingModal(false));
+		dispatch(setNewProject({ type: null, lngName: null }));
+	};
+	const closeModal = () => {
+		dispatch(handleCreatingModal(false));
+		dispatch(setNewProject({ type: null, lngName: null }));
+	};
 
 	return (
 		<div className="absolute left-0 z-[100] w-full h-full flex justify-center backdrop-blur-sm">
@@ -39,21 +60,35 @@ const EditorModal = () => {
 					<div className="flex items-center gap-2 text-slate-500 text-sm">
 						<img src="/dot.svg" alt="" width={15} className=" invert" />
 						<span className="capitalize">
-							DOTCODE/{isSnippet ? "code-snippet" : "ui-componet"}
+							DOTCODE/creating-{isSnippet ? "code-snippet" : "ui-componet"}
 						</span>
 					</div>
-					<div className="flex items-center gap-4">
+					<div className="flex gap-1">
 						{[
-							<TbMinus key={1} size={17} />,
-							<TbSquare key={2} size={15} />,
-							<TbX key={3} size={17} />,
-						].map((icon, index) => (
-							<span
-								className="text-xl text-slate-500 cursor-not-allowed"
+							{
+								icon: <TbMinus key={1} size={17} />,
+								onClick: () => minimizeModal(),
+							},
+							{
+								icon: <TbSquare key={2} size={15} />,
+								onClick: () => maximizeModal(),
+							},
+							{
+								icon: <TbX key={3} size={17} />,
+								onClick: () => closeModal(),
+							},
+						].map((tab, index) => (
+							<button
+								className={`text-xl text-slate-400 p-[2px] w-6 flex items-center justify-center transition-all duration-300 hover:text-slate-50 rounded-md ${
+									index === 2
+										? "hover:bg-red-700 "
+										: "hover:bg-[#555] hover:bg-opacity-40"
+								}`}
 								key={index}
+								onClick={tab.onClick}
 							>
-								{icon}
-							</span>
+								{tab.icon}
+							</button>
 						))}
 					</div>
 				</div>
@@ -61,7 +96,7 @@ const EditorModal = () => {
 					<div className="flex items-start gap-1">
 						<span className="flex items-center text-slate-400">
 							Dot:\{isSnippet ? "Code-Snippet" : "Ui-Component"}\
-							{isSnippet ? project.lngName : "Html-Css-Js"}
+							{isSnippet ? newProLngName : "Html-Css-Js"}
 							<IoIosArrowForward opacity={0.7} />
 						</span>
 						<textarea
