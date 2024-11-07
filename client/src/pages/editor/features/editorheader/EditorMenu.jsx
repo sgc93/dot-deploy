@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BiExport, BiPaste } from "react-icons/bi";
+import { BiExport, BiPaste, BiTerminal } from "react-icons/bi";
 import { BsFileCode } from "react-icons/bs";
 import { CgCommunity } from "react-icons/cg";
 import { FaCss3, FaJs } from "react-icons/fa";
@@ -10,7 +10,7 @@ import { MdClose, MdDelete, MdMenu, MdSave } from "react-icons/md";
 import { PiCodeBold } from "react-icons/pi";
 import { RxComponent2 } from "react-icons/rx";
 import { SiHtml5 } from "react-icons/si";
-import { TbCopy, TbCut, TbHelp } from "react-icons/tb";
+import { TbCopy, TbCut, TbHelp, TbTerminal } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useCode } from "../../../../hooks/useCode";
@@ -26,13 +26,31 @@ import {
 	handleCreatingModal,
 	handleSideMenu,
 	handleTerminal,
+	maximizeCreatingModal,
+	resetCreatingModal,
 	setNewProject,
 } from "../../editorSlice";
 import { selectMenu } from "../sidebar/sidebarSlice";
 import Publish from "./Publish";
 
+const TabWithIcon = ({ title }) => {
+	return (
+		<div className="relative flex items-center gap-[2px]">
+			<span>{title}</span>
+			<div className="rounded-md p-[2px] ">
+				<BiTerminal size={12} />
+			</div>
+		</div>
+	);
+};
+
 const MenuTab = ({ tab, selectedTab, handleClick, children }) => {
 	const isSelected = tab.title === selectedTab;
+	const { isCreatingModalMinimized, isPublishingModalMinimized } = useSelector(
+		(state) => state.editor
+	);
+	const hasMinimized = isCreatingModalMinimized && tab.title === "File";
+	console.log(hasMinimized, isCreatingModalMinimized);
 
 	const onSelectTab = (tab) => {
 		handleClick(tab.title);
@@ -56,7 +74,11 @@ const MenuTab = ({ tab, selectedTab, handleClick, children }) => {
 				} ${isSelected && !tab.isDisabled ? "bg-slate-600" : ""}`}
 				onClick={() => onSelectTab(tab)}
 			>
-				{tab.title}
+				{hasMinimized ? (
+					<TabWithIcon title={tab.title} />
+				) : (
+					<span>{tab.title}</span>
+				)}
 			</button>
 			{isSelected && !tab.isDisabled && (
 				<div
@@ -90,7 +112,8 @@ const LngIcon = (lngName) => {
 };
 
 const MenuTabContent = ({ tabName, selectAction }) => {
-	const { isCreating } = useSelector((state) => state.editor);
+	const { isCreating, newProLngName, newProType, isCreatingModalMinimized } =
+		useSelector((state) => state.editor);
 	const { project, currCode, currLng } = useSelector((state) => state.project);
 	const [isHovered, setIsHovered] = useState(false);
 
@@ -102,7 +125,14 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 	const dispatch = useDispatch();
 
 	const handleClick = (type, lngName) => {
+		dispatch(resetCreatingModal());
 		dispatch(setNewProject({ type, lngName }));
+		dispatch(handleCreatingModal(true));
+		selectAction();
+	};
+
+	const expandCreatingModal = () => {
+		dispatch(maximizeCreatingModal());
 		dispatch(handleCreatingModal(true));
 		selectAction();
 	};
@@ -179,6 +209,32 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 		case "File":
 			return (
 				<>
+					{isCreatingModalMinimized && (
+						<div
+							className="flex gap-2 transition-all duration-300 hover:bg-slate-400 hover:bg-opacity-20 cursor-pointer p-2 mt-1"
+							onClick={() => expandCreatingModal()}
+						>
+							<div className="text-slate-300">
+								<TbTerminal size={13} />
+							</div>
+							<div className="flex flex-col gap-1 -mt-[5px]">
+								<span className="text-slate-300">Expand Creating Window</span>
+								<span className="text-slate-400 text-sm">
+									You have new unfinished{" "}
+									<span className="text-red-500 font-semibold font-sans">
+										{newProType === "ui" ? "Ui-Component" : "Code-Snippet"}
+									</span>{" "}
+									{newProType === "snippet" && "with "}
+									<span
+										className="text-cyan-500 font-semibold font-sans
+								"
+									>
+										{newProType === "ui" ? "Html, css and js" : newProLngName}
+									</span>{" "}
+								</span>
+							</div>
+						</div>
+					)}
 					<div
 						className="flex gap-2 transition-all duration-300 hover:bg-slate-400 hover:bg-opacity-20 cursor-pointer p-2 mt-1"
 						onClick={() => handleClick("ui", "html")}

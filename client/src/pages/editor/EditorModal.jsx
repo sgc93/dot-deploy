@@ -4,11 +4,17 @@ import { IoIosArrowForward } from "react-icons/io";
 import { TbMinus, TbSquare, TbX } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditorOpen } from "../../hooks/useEditorOpen";
-import { handleCreatingModal, setNewProject } from "./editorSlice";
+import {
+	handleCreatingModal,
+	minimizeCreatingModal,
+	setNewProject,
+} from "./editorSlice";
 
 const EditorModal = () => {
-	const { newProLngName, newProType } = useSelector((state) => state.editor);
-	const [name, setName] = useState("");
+	const { newProLngName, newProType, newProName } = useSelector(
+		(state) => state.editor
+	);
+	const [name, setName] = useState(newProName);
 	const textareaRef = useRef();
 	const dispatch = useDispatch();
 	const openEditor = useEditorOpen();
@@ -39,13 +45,13 @@ const EditorModal = () => {
 		});
 	};
 
-	const minimizeModal = () => {
-		dispatch(handleCreatingModal(false));
-		dispatch(setNewProject({ type: null, lngName: null }));
-	};
 	const maximizeModal = () => {
 		dispatch(handleCreatingModal(false));
-		dispatch(setNewProject({ type: null, lngName: null }));
+		dispatch(minimizeCreatingModal(name));
+	};
+	const minimizeModal = () => {
+		dispatch(handleCreatingModal(false));
+		dispatch(minimizeCreatingModal(name));
 	};
 	const closeModal = () => {
 		dispatch(handleCreatingModal(false));
