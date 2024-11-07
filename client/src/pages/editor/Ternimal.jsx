@@ -7,38 +7,8 @@ import { MdClose } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import SplitPane, { Pane } from "split-pane-react";
+import { overridingScript } from "../../utils/constants";
 import { updateLogs } from "./editorSlice";
-
-const overridingScript = `
-	<script>
-        (function() {
-          const originalConsole = window.console;
-          const messages = [];
-          
-          // Override console.log and console.error to capture output
-          window.console = {
-            log: (message) => {
-              messages.push({ type: 'log', message });
-              originalConsole.log(message);
-              window.parent.postMessage({ type: 'log', message }, '*');
-            },
-            error: (message) => {
-              messages.push({ type: 'error', message });
-              originalConsole.error(message);
-              window.parent.postMessage({ type: 'error', message }, '*');
-            },
-            ...originalConsole,
-          };
-
-          // Capture uncaught errors
-          window.onerror = (message, source, lineno, colno, error) => {
-            const errorMessage = { message, source, lineno, colno, error };
-            messages.push({ type: 'error', message: errorMessage });
-            window.parent.postMessage({ type: 'error', message: errorMessage }, '*');
-          };
-        })();
-      </script>
-`;
 
 const ErrorLog = ({ log }) => {
 	const error = log.err;
