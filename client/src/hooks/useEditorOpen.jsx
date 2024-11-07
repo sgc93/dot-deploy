@@ -40,13 +40,7 @@ export const useEditorOpen = () => {
 				dispatch(
 					setCurrProject({
 						isNew: true,
-						project: {
-							name: "",
-							type: type,
-							lngName: "html",
-							code: {},
-							owner: {},
-						},
+						project: project,
 					})
 				);
 				dispatch(handleTerminal(true));
@@ -55,13 +49,7 @@ export const useEditorOpen = () => {
 				dispatch(
 					setCurrProject({
 						isNew: true,
-						project: {
-							name: "",
-							type: type,
-							lngName: lng,
-							code: {},
-							owner: {},
-						},
+						project: project,
 					})
 				);
 				dispatch(handleTerminal(false));
