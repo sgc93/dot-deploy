@@ -10,6 +10,7 @@ import { isCurrUserLiked } from "../../../../utils/validators";
 import { likeRequest } from "../../communitySlice";
 import CommentList from "./CommentList";
 import ContentFooter from "./ContentFooter";
+import ResultFrame from "./ResultFrame";
 
 const AboutProject = ({ project, goToOwner }) => {
 	const { isUserSignedIn, user } = useSelector((state) => state.auth);
@@ -23,9 +24,30 @@ const AboutProject = ({ project, goToOwner }) => {
 	const isCommented = isUserSignedIn
 		? isCurrUserLiked(commentOwners, user.userId)
 		: false;
+	const isSnippet = project.type === "snippet";
+
+	let htmlCode = "";
+	let cssCode = "";
+	let jsCode = "";
+
+	if (!isSnippet) {
+		htmlCode = project.code.html;
+		cssCode = project.code.css;
+		jsCode = project.code.js;
+	}
+
+	const srcDoc = `
+		<html>
+			<style>${cssCode} </style>
+			<body>
+				${htmlCode ? htmlCode : ""}
+			</body>
+			/override/
+			<script>${jsCode}</script>
+		</html>
+		`;
 
 	const openEditor = useEditorOpen();
-	const isSnippet = project.type === "snippet";
 	const navigateTo = useNavigate();
 	const dispatch = useDispatch();
 
@@ -130,6 +152,7 @@ const AboutProject = ({ project, goToOwner }) => {
 					/>
 				</div>
 			</div>
+			<ResultFrame srcDoc={srcDoc} />
 			<div className="hidden sd:flex">
 				<CommentList
 					comments={comments}
