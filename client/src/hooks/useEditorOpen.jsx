@@ -16,7 +16,7 @@ export const useEditorOpen = () => {
 	const navigateTo = useNavigate();
 	const dispatch = useDispatch();
 
-	const openEditor = (type, lng, project) => {
+	const openEditor = (type, project) => {
 		if (type === "open") {
 			// reset current status
 			dispatch(resetEditor());
