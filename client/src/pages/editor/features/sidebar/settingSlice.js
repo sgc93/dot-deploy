@@ -8,6 +8,7 @@ const initialState = {
 	lineNo: true,
 	holder: "",
 	foldGut: true,
+	notifyInterval: 30,
 };
 
 export const settingSlice = createSlice({
@@ -22,6 +23,9 @@ export const settingSlice = createSlice({
 		},
 		setAutoSave: (state) => {
 			state.autoSave = !state.autoSave;
+		},
+		setNotifyInterval: (state, action) => {
+			state.notifyInterval = action.payload;
 		},
 		setCloseBrackets: (state) => {
 			state.closeBrackets = !state.closeBrackets;
@@ -56,6 +60,7 @@ export const {
 	setFoldGutter,
 	setLineNo,
 	setPlaceholder,
+	setNotifyInterval,
 } = settingSlice.actions;
 
 export default settingSlice.reducer;
