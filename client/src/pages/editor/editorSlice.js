@@ -13,8 +13,10 @@ const initialState = {
 	newProLngName: "html",
 	newProName: "",
 	isCreatingModalMinimized: false,
-	isPublishModalMinimized: false,
+	isPublishingModalMinimized: false,
+	publishingData: null,
 	editorNotifications: [],
+	isExpanding: false,
 };
 
 export const editorSlice = createSlice({
@@ -79,6 +81,33 @@ export const editorSlice = createSlice({
 		resetCreatingModal: (state) => {
 			state.isCreatingModalMinimized = false;
 			state.newProName = "";
+			state.editorNotifications = state.editorNotifications.filter(
+				(noti) => noti !== "You have on-process new project"
+			);
+		},
+		minimizePublishingModal: (state, action) => {
+			state.isExpanding = false;
+			state.isPublishingModalMinimized = true;
+			state.publishingData = action.payload;
+			state.editorNotifications = [
+				...state.editorNotifications,
+				"You have minimized publishing window",
+			];
+		},
+		maximizePublishingModal: (state) => {
+			state.isExpanding = true;
+			state.isPublishingModalMinimized = false;
+			state.editorNotifications = state.editorNotifications.filter(
+				(noti) => noti !== "You have minimized publishing window"
+			);
+		},
+		resetPublishingModal: (state) => {
+			state.isExpanding = false;
+			state.isPublishingModalMinimized = false;
+			state.publishingData = "";
+			state.editorNotifications = state.editorNotifications.filter(
+				(noti) => noti !== "You have minimized publishing window"
+			);
 		},
 		resetNotifications: (state) => {
 			state.editorNotifications = [];
@@ -102,6 +131,9 @@ export const {
 	maximizeCreatingModal,
 	resetCreatingModal,
 	resetNotifications,
+	minimizePublishingModal,
+	maximizePublishingModal,
+	resetPublishingModal,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
