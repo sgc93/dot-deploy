@@ -216,16 +216,18 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 							<div className="flex flex-col gap-1 -mt-[5px]">
 								<span className="text-slate-300">Expand Creating Window</span>
 								<span className="text-slate-400 text-sm">
-									You have new unfinished{" "}
-									<span className="text-red-500 font-semibold font-sans">
+									You have new unfinished creation of{" "}
+									<span className="text-green-500 font-semibold font-sans">
 										{newProType === "ui" ? "Ui-Component" : "Code-Snippet"}
 									</span>{" "}
-									{newProType === "snippet" && "with "}
+									with{" "}
 									<span
-										className="text-cyan-500 font-semibold font-sans
+										className="text-orange-500 font-semibold font-sans
 								"
 									>
-										{newProType === "ui" ? "Html, css and js" : newProLngName}
+										{newProType === "ui"
+											? "Html, css and js"
+											: newProLngName.toUpperCase()}
 									</span>{" "}
 								</span>
 							</div>
