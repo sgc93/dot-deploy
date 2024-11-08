@@ -24,7 +24,6 @@ const PublishModal = () => {
 		(state) => state.save
 	);
 	const { publishingData, isExpanding } = useSelector((state) => state.editor);
-	console.log(publishingData);
 	const { isUserSignedIn, user } = useSelector((state) => state.auth);
 	const isSnippet = project.type === "snippet";
 	const title = isSnippet ? "Dot:/publishing-code" : "Dot:/publishing-ui";
@@ -36,12 +35,14 @@ const PublishModal = () => {
 		isExpanding ? publishingData.name : isNew ? "" : project.name
 	);
 	const [description, setDescription] = useState(
-		publishingData.description || isNew ? "" : project.description
+		isExpanding ? publishingData.description : isNew ? "" : project.description
 	);
 	const [tags, setTags] = useState([]);
-	const [status, setStatus] = useState(publishingData.status || "name");
+	const [status, setStatus] = useState(
+		isExpanding ? publishingData.status : "name"
+	);
 	const [value, setValue] = useState(
-		publishingData.tags ? publishingData.tags.join(" ") : ""
+		isExpanding ? publishingData.tags.join(" ") : ""
 	);
 	const [isExpanded, setIsExpanded] = useState("");
 	const [visibility, setVisibility] = useState(

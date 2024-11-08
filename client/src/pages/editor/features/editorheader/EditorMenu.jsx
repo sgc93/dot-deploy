@@ -199,8 +199,6 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 		selectAction();
 	};
 
-	const save = () => {};
-
 	switch (tabName) {
 		case "File":
 			return (

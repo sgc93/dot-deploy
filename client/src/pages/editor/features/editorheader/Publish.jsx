@@ -63,11 +63,7 @@ const Publish = ({ selectAction }) => {
 		<>
 			{isPublishingModalMinimized && (
 				<div
-					className={`flex items-start gap-2 p-2 border-b-[1px] border-slate-500 transition-all duration-300 ${
-						isNew && !project.owner
-							? "text-slate-500"
-							: "text-slate-300 hover:bg-slate-500 hover:text-slate-50 hover:bg-opacity-50"
-					} cursor-pointer`}
+					className={`flex items-start gap-2 p-2 border-b-[1px] border-slate-500 transition-all duration-300 text-slate-300 hover:bg-slate-500 hover:text-slate-50 hover:bg-opacity-50 cursor-pointer`}
 					onClick={() => maximizeModal()}
 				>
 					<div>
