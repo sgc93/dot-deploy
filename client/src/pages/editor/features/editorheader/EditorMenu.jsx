@@ -10,9 +10,15 @@ import { MdClose, MdDelete, MdMenu } from "react-icons/md";
 import { PiCodeBold } from "react-icons/pi";
 import { RxComponent2 } from "react-icons/rx";
 import { SiHtml5 } from "react-icons/si";
-import { TbCopy, TbCut, TbHelp, TbTerminal } from "react-icons/tb";
+import {
+	TbCopy,
+	TbCut,
+	TbHelp,
+	TbInfoHexagon,
+	TbTerminal,
+} from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useCode } from "../../../../hooks/useCode";
 import LngTab from "../../../../ui/LngTab";
 import {
@@ -106,11 +112,46 @@ const LngIcon = (lngName) => {
 	);
 };
 
+const AboutCurrProject = ({ project }) => {
+	return (
+		<div className="flex flex-col gap-1">
+			{" "}
+			<div>
+				<span className="text-slate-300">name:</span>
+				<NavLink
+					className="px-2 text-slate-200 underline underline-offset-4 transition-all duration-300 hover:text-color-5 line-clamp-1"
+					to={`/community/project/${project._id}`}
+				>
+					{project.name}
+				</NavLink>
+			</div>
+			<div>
+				<span className="text-slate-300">created by:</span>
+				<NavLink
+					className="px-2 text-slate-200 underline underline-offset-4 transition-all duration-300 hover:text-color-5"
+					to={`/profile/${project.owner._id}`}
+				>
+					{project.owner.name}
+				</NavLink>
+			</div>
+			<div>
+				<span className="text-slate-300">Prject type:</span>
+				<NavLink className="px-2 text-slate-200">
+					{`${project.type} with ${
+						project.type === "snippet" ? project.lngName : "HTML, CSS and JS"
+					}`}
+				</NavLink>
+			</div>
+		</div>
+	);
+};
+
 const MenuTabContent = ({ tabName, selectAction }) => {
 	const { isCreating, newProLngName, newProType, isCreatingModalMinimized } =
 		useSelector((state) => state.editor);
 	const { project, currCode, currLng } = useSelector((state) => state.project);
 	const [isHovered, setIsHovered] = useState(false);
+	const [isAboutHovered, setIsAboutHovered] = useState(false);
 
 	const currProjectName = project.name;
 	const isSnippet = project.type === "snippet";
@@ -293,6 +334,36 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 						</div>
 					</div>
 					<div className="my-2 border-t-[1px] border-slate-500" />
+					<div
+						className="flex items-start gap-2 transition-all duration-300 hover:bg-slate-400 hover:bg-opacity-20 cursor-pointer p-2 mt-1"
+						onMouseEnter={() => setIsAboutHovered(true)}
+						onMouseLeave={() => setIsAboutHovered(false)}
+					>
+						<div className="text-slate-300">
+							<TbInfoHexagon />
+						</div>
+						<div className="relative w-full flex flex-col gap-1  -mt-[4px]">
+							<div className="flex flex-col gap-2 border-b-[1px] border-slate-500 pb-1">
+								<div className="w-full flex items-center justify-between text-slate-400 pt-1">
+									<span className="text-slate-300">Current Project</span>
+									<IoIosArrowForward
+										className={`transition-all duration-300 ${
+											isAboutHovered ? "rotate-90" : "rotate-0"
+										}`}
+									/>
+								</div>
+								{!isAboutHovered && (
+									<span className="-mt-1 text-sm text-slate-400">
+										{project.isNew
+											? "Check current status of this project"
+											: "Check details about this project"}
+									</span>
+								)}
+							</div>
+
+							{isAboutHovered && <AboutCurrProject project={project} />}
+						</div>
+					</div>
 				</>
 			);
 		case "Edit":
