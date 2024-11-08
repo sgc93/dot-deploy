@@ -17,11 +17,11 @@ export const useEditorOpen = () => {
 	const dispatch = useDispatch();
 
 	const openEditor = (type, lng, project) => {
+		dispatch(resetEditor());
+		dispatch(resetCurrProject());
+
 		if (type === "open") {
-			// reset current status
-			dispatch(resetEditor());
-			dispatch(resetCurrProject());
-			dispatch(setCurrProject({ isNew: !project.owner, project: project }));
+			dispatch(setCurrProject({ isNew: false, project: project }));
 			if (project.type === "snippet") {
 				dispatch(
 					updateSelectedLng({ code: project.code.code, lng: project.lngName })
@@ -31,32 +31,21 @@ export const useEditorOpen = () => {
 				dispatch(updateSelectedLng({ code: project.code.html, lng: "html" }));
 				dispatch(handleTerminal(true));
 			}
-			// open editor with setups
-			dispatch(handleCreatingModal(false));
 		} else {
-			dispatch(resetEditor());
+			dispatch(
+				setCurrProject({
+					isNew: true,
+					project: project,
+				})
+			);
 			if (type === "ui") {
-				dispatch(resetCurrProject());
-				dispatch(
-					setCurrProject({
-						isNew: true,
-						project: project,
-					})
-				);
 				dispatch(handleTerminal(true));
 			} else {
-				dispatch(resetCurrProject());
-				dispatch(
-					setCurrProject({
-						isNew: true,
-						project: project,
-					})
-				);
 				dispatch(handleTerminal(false));
 			}
-
-			dispatch(handleCreatingModal(true));
 		}
+
+		dispatch(handleCreatingModal(false));
 		dispatch(selectMenu({ name: "explore", title: "Explore" }));
 		navigateTo("/editor/code");
 	};
