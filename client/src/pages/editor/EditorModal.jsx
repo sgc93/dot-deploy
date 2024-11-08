@@ -7,6 +7,7 @@ import { useEditorOpen } from "../../hooks/useEditorOpen";
 import {
 	handleCreatingModal,
 	minimizeCreatingModal,
+	resetPublishingModal,
 	setNewProject,
 } from "./editorSlice";
 
@@ -44,6 +45,7 @@ const EditorModal = () => {
 			code: isSnippet ? { code: "" } : { html: "", css: "", js: "" },
 			owner: {},
 		});
+		dispatch(resetPublishingModal());
 	};
 
 	const maximizeModal = () => setIsExpanded((is) => !is);
