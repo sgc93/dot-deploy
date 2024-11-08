@@ -46,11 +46,6 @@ const TabWithIcon = ({ title }) => {
 
 const MenuTab = ({ tab, selectedTab, handleClick, children }) => {
 	const isSelected = tab.title === selectedTab;
-	const { isCreatingModalMinimized, isPublishingModalMinimized } = useSelector(
-		(state) => state.editor
-	);
-	const hasMinimized = isCreatingModalMinimized && tab.title === "File";
-	console.log(hasMinimized, isCreatingModalMinimized);
 
 	const onSelectTab = (tab) => {
 		handleClick(tab.title);
@@ -74,7 +69,7 @@ const MenuTab = ({ tab, selectedTab, handleClick, children }) => {
 				} ${isSelected && !tab.isDisabled ? "bg-slate-600" : ""}`}
 				onClick={() => onSelectTab(tab)}
 			>
-				{hasMinimized ? (
+				{tab.hasMinimized ? (
 					<TabWithIcon title={tab.title} />
 				) : (
 					<span>{tab.title}</span>
@@ -457,9 +452,13 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 };
 
 const EditorMenu = ({ show, setShow }) => {
-	const { isCreating, showTerminal, isPublishing } = useSelector(
-		(state) => state.editor
-	);
+	const {
+		isCreating,
+		showTerminal,
+		isPublishing,
+		isCreatingModalMinimized,
+		isPublishingModalMinimized,
+	} = useSelector((state) => state.editor);
 	const { project } = useSelector((state) => state.project);
 	const isSnippet = project.type === "snippet";
 	const [selectedTab, setSelectedTab] = useState("");
@@ -497,9 +496,20 @@ const EditorMenu = ({ show, setShow }) => {
 			)}
 			<div className={`${show ? "hidden" : "flex"} sm:flex items-center px-4`}>
 				{[
-					{ title: "File", isDisabled: isPublishing },
-					{ title: "Edit", isDisabled: isCreating || isPublishing },
-					{ title: "Save", isDisabled: isCreating || isPublishing },
+					{
+						title: "File",
+						isDisabled: isPublishing,
+						hasMinimized: isCreatingModalMinimized,
+					},
+					{
+						title: "Edit",
+						isDisabled: isCreating || isPublishing,
+					},
+					{
+						title: "Save",
+						isDisabled: isCreating || isPublishing,
+						hasMinimized: isPublishingModalMinimized,
+					},
 					{ title: "Export", isDisabled: isCreating || isPublishing },
 					{
 						title: "Settings",
