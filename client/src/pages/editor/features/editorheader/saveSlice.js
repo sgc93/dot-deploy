@@ -38,6 +38,10 @@ const saveSlice = createSlice({
 			state.lastSave = Date.now();
 			state.savedProject = action.payload;
 		},
+		setLastSave: (state, action) => {
+			state.lastSave = action.payload.at;
+			state.savedProject = action.payload.project;
+		},
 	},
 });
 
@@ -47,6 +51,7 @@ export const {
 	saveFailure,
 	saveReset,
 	setSavedProject,
+	setLastSave,
 } = saveSlice.actions;
 
 export default saveSlice.reducer;
