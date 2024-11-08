@@ -9,7 +9,7 @@ const EditorLogo = () => {
 
 	return (
 		<button className="cursor-pointer" onClick={() => navigateTo("/")}>
-			<img src="/dot.svg" alt="" className="w-6 h-6 ml-2" />
+			<img src="/dot.svg" alt="" className="min-w-6 min-h-6 w-6 h-6 ml-2" />
 		</button>
 	);
 };

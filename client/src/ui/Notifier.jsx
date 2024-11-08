@@ -139,10 +139,10 @@ const Notifier = () => {
 		return (
 			<NotifierContent
 				content={normal}
-				boxClasses={"border-[#555] text-slate-300"}
+				boxClasses={"border-[#555] text-slate-300 flex items-start"}
 				btnClasses={"text-slate-300 hover:text-slate-50"}
 			>
-				<img src="/dot.svg" width={15} className=" grayscale" />
+				<img src="/dot.svg" width={15} className="min-w-[15px] grayscale" />
 			</NotifierContent>
 		);
 	}
