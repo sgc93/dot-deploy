@@ -6,7 +6,7 @@ import { FaCss3, FaJs } from "react-icons/fa";
 import { GoPaste } from "react-icons/go";
 import { ImFileZip } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
-import { MdClose, MdDelete, MdMenu, MdSave } from "react-icons/md";
+import { MdClose, MdDelete, MdMenu } from "react-icons/md";
 import { PiCodeBold } from "react-icons/pi";
 import { RxComponent2 } from "react-icons/rx";
 import { SiHtml5 } from "react-icons/si";
@@ -120,6 +120,7 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 	const dispatch = useDispatch();
 
 	const handleClick = (type, lngName) => {
+		console.log("creating ", type, " with ", lngName);
 		dispatch(resetCreatingModal());
 		dispatch(setNewProject({ type, lngName }));
 		dispatch(handleCreatingModal(true));
@@ -292,21 +293,6 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 						</div>
 					</div>
 					<div className="my-2 border-t-[1px] border-slate-500" />
-					<div
-						className={`flex gap-2 transition-all duration-300 ${
-							isCreating
-								? "text-slate-500"
-								: "hover:bg-slate-400 text-slate-300"
-						}  hover:bg-opacity-20 cursor-pointer p-2 mb-1`}
-						onClick={() => save()}
-					>
-						<div>
-							<MdSave size={14} />
-						</div>
-						<div className="w-full flex flex-col gap-1 -mt-[5px]">
-							<span>Save</span>
-						</div>
-					</div>
 				</>
 			);
 		case "Edit":
