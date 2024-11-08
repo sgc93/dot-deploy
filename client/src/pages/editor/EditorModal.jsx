@@ -38,7 +38,7 @@ const EditorModal = () => {
 	const toNext = () => {
 		const isSnippet = newProType === "snippet";
 
-		openEditor("open", newProLngName, {
+		openEditor(newProType, newProLngName, {
 			name: name ? name : "Untitled",
 			type: newProType,
 			lngName: newProLngName,
