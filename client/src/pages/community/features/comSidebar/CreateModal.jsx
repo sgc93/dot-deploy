@@ -4,16 +4,27 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdArrowForward } from "react-icons/md";
 import { PiCodeBold } from "react-icons/pi";
 import { RxComponent2 } from "react-icons/rx";
-import { useEditorOpen } from "../../../../hooks/useEditorOpen";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import LngTab from "../../../../ui/LngTab";
 import { supportedLng } from "../../../../utils/supportedLng";
+import {
+	handleCreatingModal,
+	resetCreatingModal,
+	setNewProject,
+} from "../../../editor/editorSlice";
 
 const CreateModal = ({ exitSelecting, setIsPosting }) => {
 	const [isHovered, setIsHovered] = useState(false);
-	const openEditor = useEditorOpen();
+	const dispatch = useDispatch();
+	const navigateTo = useNavigate();
 
-	const handleClick = (type, lng) => {
-		openEditor(type, lng);
+	const handleClick = (type, lngName) => {
+		dispatch(resetCreatingModal());
+		dispatch(setNewProject({ type, lngName }));
+		dispatch(handleCreatingModal(true));
+		navigateTo("/editor/code");
+
 		exitSelecting();
 	};
 
