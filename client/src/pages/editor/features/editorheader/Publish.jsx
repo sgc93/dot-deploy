@@ -23,8 +23,13 @@ const Publish = ({ selectAction }) => {
 	const dispatch = useDispatch();
 	const navigateTo = useNavigate();
 	let isOwnerIsThisUser = false;
-	if (isUserSignedIn && project.owner) {
-		isOwnerIsThisUser = project.owner._id === user.userId;
+	if (isUserSignedIn) {
+		if (isNew) {
+			isOwnerIsThisUser = true;
+		} else {
+			isOwnerIsThisUser =
+				project.owner._id.toString() === user.userId.toString();
+		}
 	}
 
 	const handleSave = () => {
@@ -106,19 +111,21 @@ const Publish = ({ selectAction }) => {
 				<span className="font-bold">Save As</span>
 			</div>
 			<div
-				className={`flex items-center gap-2 p-2 border-b-[1px] border-slate-500 transition-all duration-300 ${
-					isNew
-						? "text-slate-500"
-						: "hover:bg-slate-500 text-slate-300 hover:text-slate-50 hover:bg-opacity-50"
-				} cursor-pointer`}
-				onClick={() => (isNew ? {} : updateAutoSave())}
+				className={`flex items-start gap-2 p-2 border-b-[1px] border-slate-500 transition-all duration-300 hover:bg-slate-500 text-slate-300 hover:text-slate-50 hover:bg-opacity-50 cursor-pointer`}
+				onClick={() => updateAutoSave()}
 			>
 				<div>
 					<TbCloudCode size={22} />
 				</div>
-				<div className="flex-grow flex items-center justify-between gap-3">
-					<span className="font-bold">Enable auto save </span>
-					{autoSave ? <FaToggleOn size={23} /> : <FaToggleOff size={23} />}
+				<div className="flex flex-col gap-2 w-full">
+					<div className="flex-grow flex items-center justify-between gap-3">
+						<span className="font-bold">Notify me</span>
+						{autoSave ? <FaToggleOn size={23} /> : <FaToggleOff size={23} />}
+					</div>
+					<span>
+						<span className="text-color-5">Dotcode</span> will notify you to
+						save your changes if there is any in 60 sec interval
+					</span>
 				</div>
 			</div>
 		</>
