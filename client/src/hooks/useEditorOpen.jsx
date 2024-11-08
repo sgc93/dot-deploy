@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import {
 	handleCreatingModal,
 	handleTerminal,
+	resetCreatingModal,
 	resetEditor,
+	resetPublishingModal,
 } from "../pages/editor/editorSlice";
 import { selectMenu } from "../pages/editor/features/sidebar/sidebarSlice";
 import {
@@ -19,6 +21,8 @@ export const useEditorOpen = () => {
 	const openEditor = (type, lng, project) => {
 		dispatch(resetEditor());
 		dispatch(resetCurrProject());
+		dispatch(resetCreatingModal());
+		dispatch(resetPublishingModal());
 
 		if (type === "open") {
 			dispatch(setCurrProject({ isNew: false, project: project }));
