@@ -58,21 +58,18 @@ const projectSlice = createSlice({
 			state.error = initialState.error;
 			state.isLoading = initialState.isLoading;
 		},
-		updateProjectRequest: (state, action) => {
+		updateProjectRequest: (state) => {
 			state.isDone = false;
 			state.error = "";
 			state.isLoading = true;
 		},
-		updateProjectSuccess: (state, action) => {
+		updateProjectSuccess: (state) => {
 			state.isLoading = false;
 			state.isDone = true;
 		},
 		updateProjectFailure: (state, action) => {
 			state.error = action.payload;
 			state.isLoading = false;
-		},
-		deleteProject: (state, action) => {
-			//
 		},
 	},
 });
