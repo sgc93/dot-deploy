@@ -112,27 +112,46 @@ const LngIcon = (lngName) => {
 	);
 };
 
-const AboutCurrProject = ({ project }) => {
+const AboutCurrProject = ({ project, isNew }) => {
+	const { isUserSignedIn, user } = useSelector((state) => state.auth);
 	return (
 		<div className="flex flex-col gap-1">
 			{" "}
 			<div>
 				<span className="text-slate-300">name:</span>
-				<NavLink
-					className="px-2 text-slate-200 underline underline-offset-4 transition-all duration-300 hover:text-color-5 line-clamp-1"
-					to={`/community/project/${project._id}`}
-				>
-					{project.name}
-				</NavLink>
+				{isNew ? (
+					<span
+						className="px-2 text-slate-200"
+						to={`/community/project/${project._id}`}
+					>
+						{project.name}
+					</span>
+				) : (
+					<NavLink
+						className="px-2 text-slate-200 underline underline-offset-4 transition-all duration-300 hover:text-color-5 line-clamp-1"
+						to={`/community/project/${project._id}`}
+					>
+						{project.name}
+					</NavLink>
+				)}
 			</div>
 			<div>
 				<span className="text-slate-300">created by:</span>
-				<NavLink
-					className="px-2 text-slate-200 underline underline-offset-4 transition-all duration-300 hover:text-color-5"
-					to={`/profile/${project.owner._id}`}
-				>
-					{project.owner.name}
-				</NavLink>
+				{isNew ? (
+					<NavLink
+						className="px-2 text-slate-200 underline underline-offset-4 transition-all duration-300 hover:text-color-5"
+						to={isUserSignedIn ? `/profile/${user.userId}` : `/login`}
+					>
+						You
+					</NavLink>
+				) : (
+					<NavLink
+						className="px-2 text-slate-200 underline underline-offset-4 transition-all duration-300 hover:text-color-5"
+						to={`/profile/${project.owner._id}`}
+					>
+						{project.owner.name}
+					</NavLink>
+				)}
 			</div>
 			<div>
 				<span className="text-slate-300">Prject type:</span>
@@ -149,7 +168,9 @@ const AboutCurrProject = ({ project }) => {
 const MenuTabContent = ({ tabName, selectAction }) => {
 	const { isCreating, newProLngName, newProType, isCreatingModalMinimized } =
 		useSelector((state) => state.editor);
-	const { project, currCode, currLng } = useSelector((state) => state.project);
+	const { project, currCode, currLng, isNew } = useSelector(
+		(state) => state.project
+	);
 	const [isHovered, setIsHovered] = useState(false);
 	const [isAboutHovered, setIsAboutHovered] = useState(false);
 
@@ -354,14 +375,16 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 								</div>
 								{!isAboutHovered && (
 									<span className="-mt-1 text-sm text-slate-400">
-										{project.isNew
+										{isNew
 											? "Check current status of this project"
 											: "Check details about this project"}
 									</span>
 								)}
 							</div>
 
-							{isAboutHovered && <AboutCurrProject project={project} />}
+							{isAboutHovered && (
+								<AboutCurrProject project={project} isNew={isNew} />
+							)}
 						</div>
 					</div>
 				</>
