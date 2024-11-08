@@ -1,7 +1,8 @@
 import { css } from "@codemirror/lang-css";
 import { html } from "@codemirror/lang-html";
 import { javascript } from "@codemirror/lang-javascript";
-import { useState } from "react";
+import { isEqual } from "lodash";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pane } from "split-pane-react";
 import SplitPane from "split-pane-react/esm/SplitPane";
@@ -10,6 +11,7 @@ import { useUiUpdate } from "../../hooks/useUiUpdate";
 import EditorToolTip from "../../ui/EditorToolTip";
 import FileNameTab from "../../ui/FileNameTab";
 import PublishModal from "../../ui/PublishModal";
+import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
 import Editor from "./Editor";
 import EditorModal from "./EditorModal";
 import ResultTerminal from "./ResultTernimal";
@@ -102,10 +104,15 @@ const CodeBoxHeader = ({ lngName }) => {
 };
 
 const EditorCodeBox = () => {
-	const { project, currLng, currCode } = useSelector((state) => state.project);
+	const { project, currLng, currCode, isNew } = useSelector(
+		(state) => state.project
+	);
 	const { isCreating, showTerminal, showSideMenu, splitDxr, isPublishing } =
 		useSelector((state) => state.editor);
+	const { autoSave, notifyInterval } = useSelector((state) => state.setting);
+	const { lastSave, savedProject } = useSelector((state) => state.save);
 	const isSnippet = project.type === "snippet";
+	const hasCodeChanged = !isEqual(savedProject, project);
 
 	let htmlCode = "";
 	let cssCode = "";
@@ -136,6 +143,29 @@ const EditorCodeBox = () => {
 			<script>${jsCode}</script>
 		</html>
 		`;
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		let interval;
+		interval = setInterval(() => {
+			console.log(
+				autoSave,
+				hasCodeChanged,
+				Date.now() - lastSave,
+				notifyInterval,
+				lastSave
+			);
+			if (autoSave && hasCodeChanged) {
+				if (Date.now() - lastSave > notifyInterval) {
+					dispatch(resetNotifier());
+					dispatch(setNotifier({ warning: "You have unsaved changes" }));
+				}
+			}
+		}, notifyInterval * 1000);
+
+		return () => clearInterval(interval);
+	}, [notifyInterval, autoSave, hasCodeChanged, lastSave, dispatch]);
 
 	const resizeTerminal = (newSizes) => {
 		setSizes(newSizes);
