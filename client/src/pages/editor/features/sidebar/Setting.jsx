@@ -15,6 +15,7 @@ import {
 	setCloseBrackets,
 	setFoldGutter,
 	setLineNo,
+	setNotifyInterval,
 	setPlaceholder,
 	updateCodeFontSize,
 	updateCodeTabSize,
@@ -27,10 +28,11 @@ const Settings = () => {
 	const { codeFontSize, codeTabSize, closeBrackets, lineNo, holder, foldGut } =
 		useSelector((state) => state.setting);
 	const { showTerminal, splitDxr } = useSelector((state) => state.editor);
-	const { project, isNew } = useSelector((state) => state.project);
-	const autoSave = useSelector((state) => state.setting.autoSave);
+	const { project } = useSelector((state) => state.project);
+	const { autoSave, notifyInterval } = useSelector((state) => state.setting);
 	const isSnippet = project.type === "snippet";
 
+	const [interval, setInterval] = useState(notifyInterval);
 	const [fontSize, setFontSize] = useState(codeFontSize);
 	const [tabSize, setTabSize] = useState(codeTabSize);
 	const [editorPlaceHolder, setEditorPlaceHolder] = useState(holder);
@@ -42,11 +44,15 @@ const Settings = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(updateCodeFontSize(fontSize));
+		dispatch(updateCodeFontSize(fontSize > 7 ? fontSize : 7));
 	}, [fontSize, dispatch]);
 
 	useEffect(() => {
-		dispatch(updateCodeTabSize(tabSize));
+		dispatch(setNotifyInterval(interval > 5 ? interval : 5));
+	}, [interval, dispatch]);
+
+	useEffect(() => {
+		dispatch(updateCodeTabSize(tabSize > 1 ? tabSize : 1));
 	}, [tabSize, dispatch]);
 
 	useEffect(() => {
@@ -66,9 +72,7 @@ const Settings = () => {
 	};
 
 	const onAutoSave = () => {
-		if (!isNew) {
-			dispatch(setAutoSave());
-		}
+		dispatch(setAutoSave());
 	};
 
 	return (
@@ -89,26 +93,41 @@ const Settings = () => {
 				</div>
 				{!isG3Collapsed && (
 					<div className="flex flex-col gap-1">
-						<div className="flex items-center justify-between gap-1 pl-6 bg-slate-400 bg-opacity-20 text-slate-400">
-							<div className="flex items-center gap-1">
-								<div className=" text-color-7">
-									<BiCloudUpload size={17} />
-								</div>
-								<span className="text-sm line-clamp-1">Enable auto save</span>
+						<div className="flex items-start justify-between gap-1 pl-6 bg-slate-400 bg-opacity-20 text-slate-400 py-1">
+							<div className=" text-color-5">
+								<BiCloudUpload size={17} />
 							</div>
-							<div
-								className="text-2xl cursor-pointer pr-2 py-2"
-								onClick={() => onAutoSave()}
-							>
-								{autoSave ? (
-									<FaToggleOn className="text-slate-300" />
-								) : (
-									<FaToggleOff
-										className={`text-slate-600 transition-all duration-300 ${
-											!isNew && "hover:text-slate-300"
-										}`}
+							<div className="flex flex-col gap-2 -mt-3">
+								<div className="flex items-center justify-between gap-1">
+									<span className="text-sm line-clamp-1">Notify me </span>
+									<div
+										className="text-2xl cursor-pointer pr-2 py-2"
+										onClick={() => onAutoSave()}
+									>
+										{autoSave ? (
+											<FaToggleOn className="text-slate-300" />
+										) : (
+											<FaToggleOff
+												className={`text-slate-400 transition-all duration-300 hover:text-slate-300`}
+											/>
+										)}
+									</div>
+								</div>
+								<div className="flex items-end justify-between gap-3">
+									<span className="text-slate-400 pr-2 line-clamp-3">
+										<span className="text-color-5">Dotcode</span> will notify
+										you to save your changes if there is any in :
+									</span>
+									<input
+										type="number"
+										className="input-number flex w-12 pl-2 text-slate-300 bg-slate-400 bg-opacity-20 rounded-l-md border-none outline-none"
+										value={interval}
+										step={0}
+										onChange={(e) =>
+											setInterval(e.target.value > 0 ? e.target.value : 0)
+										}
 									/>
-								)}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -142,9 +161,11 @@ const Settings = () => {
 							<input
 								type="number"
 								className="input-number flex w-12 pl-2 text-slate-300 bg-slate-400 bg-opacity-20 rounded-l-md border-none outline-none"
-								value={codeFontSize}
+								value={fontSize}
 								step={0}
-								onChange={(e) => setFontSize(e.target.value)}
+								onChange={(e) =>
+									setFontSize(e.target.value > 0 ? e.target.value : 0)
+								}
 							/>
 						</div>
 						<div className="flex items-center justify-between gap-1 pl-6  bg-slate-400 bg-opacity-20 text-slate-400">
@@ -161,7 +182,9 @@ const Settings = () => {
 								className="input-number flex w-12 pl-2 text-slate-300 bg-slate-400 bg-opacity-20 rounded-l-md border-none outline-none"
 								value={codeTabSize}
 								step={0}
-								onChange={(e) => setTabSize(e.target.value)}
+								onChange={(e) =>
+									setTabSize(e.target.value > 0 ? e.target.value : 1)
+								}
 							/>
 						</div>
 						<div className="flex items-center justify-between gap-1 pl-6  bg-slate-400 bg-opacity-20 text-slate-400">
@@ -175,7 +198,7 @@ const Settings = () => {
 							</div>
 							<input
 								type="text"
-								className="flex w-22 pl-2 text-slate-300 bg-slate-400 bg-opacity-20 rounded-l-md border-none outline-none"
+								className="flex pl-2 text-slate-300 bg-slate-400 bg-opacity-20 rounded-l-md border-none outline-none"
 								value={editorPlaceHolder}
 								onChange={(e) => setEditorPlaceHolder(e.target.value)}
 							/>
