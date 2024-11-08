@@ -1,20 +1,25 @@
 import { isEqual } from "lodash";
+import { BiTerminal } from "react-icons/bi";
 import { FaToggleOff } from "react-icons/fa";
 import { FaToggleOn } from "react-icons/fa6";
 import { TbCloudCode, TbCloudPlus, TbCloudUpload } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { handlePublishModal } from "../../editorSlice";
+import {
+	handlePublishModal,
+	maximizePublishingModal,
+	resetPublishingModal,
+} from "../../editorSlice";
 import { updateProjectRequest } from "../../projectSlice";
 import { setAutoSave } from "../sidebar/settingSlice";
 
 const Publish = ({ selectAction }) => {
 	const { isUserSignedIn } = useSelector((state) => state.auth);
-	const { isNew } = useSelector((state) => state.project);
+	const { isNew, project } = useSelector((state) => state.project);
 	const autoSave = useSelector((state) => state.setting.autoSave);
 	const { savedProject } = useSelector((state) => state.save);
 	const { user } = useSelector((state) => state.auth);
-	const { project } = useSelector((state) => state.project);
+	const { isPublishingModalMinimized } = useSelector((state) => state.editor);
 	const dispatch = useDispatch();
 	const navigateTo = useNavigate();
 	let isOwnerIsThisUser = false;
@@ -39,16 +44,41 @@ const Publish = ({ selectAction }) => {
 	const handlePublish = () => {
 		if (isUserSignedIn) {
 			selectAction();
+			dispatch(resetPublishingModal());
 			dispatch(handlePublishModal(true));
 		} else {
 			navigateTo("/login");
 		}
 	};
 
+	const maximizeModal = () => {
+		dispatch(maximizePublishingModal());
+		dispatch(handlePublishModal(true));
+		selectAction();
+	};
+
 	const updateAutoSave = () => dispatch(setAutoSave());
 
 	return (
 		<>
+			{isPublishingModalMinimized && (
+				<div
+					className={`flex items-start gap-2 p-2 border-b-[1px] border-slate-500 transition-all duration-300 ${
+						isNew && !project.owner
+							? "text-slate-500"
+							: "text-slate-300 hover:bg-slate-500 hover:text-slate-50 hover:bg-opacity-50"
+					} cursor-pointer`}
+					onClick={() => maximizeModal()}
+				>
+					<div>
+						<BiTerminal size={23} />
+					</div>
+					<div className="flex flex-col">
+						<span className="font-bold">Continue paused saving</span>
+						<span className="text-sm">You have minimized saving terminal</span>
+					</div>
+				</div>
+			)}
 			<div
 				className={`flex items-center gap-2 p-2 border-b-[1px] border-slate-500 ${
 					isNew
