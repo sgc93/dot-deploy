@@ -3,10 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { AiOutlineEnter } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoRefresh } from "react-icons/io5";
-import { TbX } from "react-icons/tb";
+import { TbMinimize, TbMinus, TbSquare, TbX } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditorOpen } from "../hooks/useEditorOpen";
-import { handlePublishModal } from "../pages/editor/editorSlice";
+import {
+	handlePublishModal,
+	minimizePublishingModal,
+	resetPublishingModal,
+} from "../pages/editor/editorSlice";
 import {
 	saveRequest,
 	saveReset,
@@ -19,6 +23,8 @@ const PublishModal = () => {
 	const { isLoading, error, isPublishingDone } = useSelector(
 		(state) => state.save
 	);
+	const { publishingData, isExpanding } = useSelector((state) => state.editor);
+	console.log(publishingData);
 	const { isUserSignedIn, user } = useSelector((state) => state.auth);
 	const isSnippet = project.type === "snippet";
 	const title = isSnippet ? "Dot:/publishing-code" : "Dot:/publishing-ui";
@@ -26,15 +32,24 @@ const PublishModal = () => {
 	const dispatch = useDispatch();
 	const openEditor = useEditorOpen();
 
-	const [projectName, setProjectName] = useState(isNew ? project.name : "");
+	const [projectName, setProjectName] = useState(
+		isExpanding ? publishingData.name : isNew ? "" : project.name
+	);
 	const [description, setDescription] = useState(
-		isNew ? "" : project.description
+		publishingData.description || isNew ? "" : project.description
 	);
 	const [tags, setTags] = useState([]);
-	const [status, setStatus] = useState("name");
-	const [value, setValue] = useState("");
+	const [status, setStatus] = useState(publishingData.status || "name");
+	const [value, setValue] = useState(
+		publishingData.tags ? publishingData.tags.join(" ") : ""
+	);
+	const [isExpanded, setIsExpanded] = useState("");
 	const [visibility, setVisibility] = useState(
-		isNew ? "public" : project.visibility
+		isExpanding
+			? publishingData.visibility
+			: isNew
+			? "public"
+			: project.visibility
 	);
 
 	const nameRef = useRef();
@@ -86,6 +101,7 @@ const PublishModal = () => {
 		};
 
 		dispatch(saveRequest(newProject));
+		dispatch(resetPublishingModal());
 	};
 
 	const toNext = () => {
@@ -118,7 +134,22 @@ const PublishModal = () => {
 		setVisibility(isNew ? "public" : project.visibility);
 	};
 
-	const cancel = () => dispatch(handlePublishModal(false));
+	const cancel = () => {
+		dispatch(handlePublishModal(false));
+		dispatch(resetPublishingModal());
+	};
+	const maximizeModal = () => setIsExpanded((is) => !is);
+	const minimizeModal = () => {
+		const newProject = {
+			name: projectName,
+			description: description,
+			visibility: visibility,
+			tags: tags,
+			status: status,
+		};
+		dispatch(minimizePublishingModal(newProject));
+		dispatch(handlePublishModal(false));
+	};
 
 	const handleVisibility = (v) => {
 		if (status === "visibility") {
@@ -140,7 +171,11 @@ const PublishModal = () => {
 
 	return (
 		<div className="absolute left-0 z-[100] w-full h-full flex backdrop-blur-sm">
-			<div className="flex flex-col w-[35rem] h-max min-h-[20rem] rounded-lg border-[1px] border-slate-700 overflow-hidden shadow-lg shadow-slate-900 m-5">
+			<div
+				className={`flex flex-col ${
+					isExpanded ? "w-full h-full" : "w-[35rem] h-max min-h-[20rem]  m-5"
+				} rounded-lg border-[1px] border-slate-700 overflow-hidden shadow-lg shadow-slate-900`}
+			>
 				<div className="flex items-center justify-between bg-gray-800 border-b-[1px] border-slate-700 px-2 py-[5px]">
 					<div className="flex items-center gap-2 text-slate-400 text-sm">
 						<img src="/dot.svg" alt="" width={15} className=" invert" />
@@ -158,12 +193,38 @@ const PublishModal = () => {
 								<IoRefresh key={3} size={17} className="rotate-45" />
 							</span>
 						)}
-						<span
-							className={`text-xl text-slate-400 cursor-pointer transition-all duration-300 h-5 flex items-center justify-center rounded-md w-5 hover:bg-red-500 hover:text-slate-200`}
-							onClick={() => cancel()}
-						>
-							<TbX key={3} size={17} />
-						</span>
+						<div className="flex gap-1">
+							{[
+								{
+									icon: <TbMinus key={1} size={17} />,
+									onClick: () => minimizeModal(),
+								},
+								{
+									icon: isExpanded ? (
+										<TbMinimize key={2} size={19} />
+									) : (
+										<TbSquare key={2} size={15} />
+									),
+									onClick: () => maximizeModal(),
+								},
+								{
+									icon: <TbX key={3} size={17} />,
+									onClick: () => cancel(),
+								},
+							].map((tab, index) => (
+								<button
+									className={`text-xl text-slate-400 p-[2px] w-6 flex items-center justify-center transition-all duration-300 hover:text-slate-50 rounded-md ${
+										index === 2
+											? "hover:bg-red-700 "
+											: "hover:bg-[#555] hover:bg-opacity-40"
+									}`}
+									key={index}
+									onClick={tab.onClick}
+								>
+									{tab.icon}
+								</button>
+							))}
+						</div>
 					</div>
 				</div>
 				{isLoading && (
