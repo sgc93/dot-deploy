@@ -7,6 +7,7 @@ import {
 	resetEditor,
 	resetPublishingModal,
 } from "../pages/editor/editorSlice";
+import { setLastSave } from "../pages/editor/features/editorheader/saveSlice";
 import { selectMenu } from "../pages/editor/features/sidebar/sidebarSlice";
 import {
 	resetCurrProject,
@@ -52,6 +53,7 @@ export const useEditorOpen = () => {
 		dispatch(handleCreatingModal(false));
 		dispatch(selectMenu({ name: "explore", title: "Explore" }));
 		navigateTo("/editor/code");
+		dispatch(setLastSave({ at: Date.now(), project }));
 	};
 
 	return openEditor;
