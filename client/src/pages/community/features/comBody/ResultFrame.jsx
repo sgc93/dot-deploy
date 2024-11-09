@@ -11,7 +11,6 @@ const ResultFrame = ({ srcDoc }) => {
 				height={"100%"}
 				width={"100%"}
 				sandbox="allow-scripts"
-				className=" code-overflow"
 			/>
 		</div>
 	);
