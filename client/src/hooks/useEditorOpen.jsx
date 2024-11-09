@@ -5,7 +5,9 @@ import {
 	handleTerminal,
 	resetCreatingModal,
 	resetEditor,
+	resetLogs,
 	resetPublishingModal,
+	updateLogs,
 } from "../pages/editor/editorSlice";
 import { setLastSave } from "../pages/editor/features/editorheader/saveSlice";
 import { selectMenu } from "../pages/editor/features/sidebar/sidebarSlice";
@@ -51,6 +53,15 @@ export const useEditorOpen = () => {
 		}
 
 		dispatch(handleCreatingModal(false));
+		dispatch(resetLogs());
+		dispatch(
+			updateLogs(
+				JSON.stringify({
+					type: "info",
+					info: JSON.stringify(project, null, 2),
+				})
+			)
+		);
 		dispatch(selectMenu({ name: "explore", title: "Explore" }));
 		navigateTo("/editor/code");
 		dispatch(setLastSave({ at: Date.now(), project }));
