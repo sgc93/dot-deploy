@@ -86,6 +86,7 @@ const AboutProject = ({ project, goToOwner }) => {
 								name={project.owner.name}
 								avatarUrl={project.owner.avatarUrl}
 								projectName={project.name}
+								onProject={() => {}}
 							/>
 							<div className="hidden sm:flex">
 								<BackBtn />
@@ -107,7 +108,7 @@ const AboutProject = ({ project, goToOwner }) => {
 					</div>
 					<div className="w-full flex items-center justify-between">
 						<div className="flex flex-wrap items-center gap-2 text-slate-400 text-sm">
-							<LngName name={"html"} isSnippet={isSnippet} />
+							<LngName name={project.lngName} isSnippet={isSnippet} />
 							<button
 								className="flex items-center gap-2 font-semibold bg-slate-700 bg-opacity-50 px-2 py-[1px] rounded-md transition-all duration-300 hover:underline hover:underline-offset-2 hover:bg-opacity-70"
 								onClick={() => openEditor("open", project.lng, project)}
@@ -152,13 +153,20 @@ const AboutProject = ({ project, goToOwner }) => {
 					/>
 				</div>
 			</div>
-			{!isSnippet && <ResultFrame srcDoc={srcDoc} />}
+			{!isSnippet && (
+				<>
+					<ResultFrame srcDoc={srcDoc} />
+					<div className="flex border-b-[1px] border-[#555]" />
+				</>
+			)}
 			<div className="hidden sd:flex">
 				<CommentList
 					comments={comments}
 					toId={project._id}
 					commentedOn={"project"}
-					classes={"small-scroll h-[12rem]"}
+					classes={`small-scroll ${
+						isSnippet ? "max-h-[24.3rem]" : "h-[12rem]"
+					}`}
 				/>
 			</div>
 		</div>
