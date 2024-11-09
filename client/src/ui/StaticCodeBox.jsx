@@ -4,32 +4,7 @@ import { oneDark } from "@codemirror/theme-one-dark";
 import CodeMirror from "@uiw/react-codemirror";
 import { EditorView } from "codemirror";
 
-const sampleCode = `
-import AIHeader from './AIHeader.js';
-import InputBox from './InputBox.js';
-import QuickQ from './QuickQ.js';
-
-const AI = () => {
-	return (
-		<div className="w-[40vw] h-fit bg-slate-800 p-5 rounded-lg flex flex-col gap-2 items-center">
-			<AIHeader/>
-			<QuickQ/>
-			<InputBox/>
-		</div>
-	);
-};
-`;
-
-const StaticCodeBox = ({
-	code,
-	language,
-	customStyle,
-	numberStyle,
-	className,
-	height,
-	width,
-	style,
-}) => {
+const StaticCodeBox = ({ code, className, height, width }) => {
 	const customTheme = EditorView.theme({
 		"&": {
 			backgroundColor: "#02112436",
@@ -58,7 +33,11 @@ const StaticCodeBox = ({
 				height={height ? height : "100%"}
 				theme={oneDark}
 				width={width ? width : "100%"}
-				extensions={[javascript(), EditorView.lineWrapping, indentUnit.of(4)]}
+				extensions={[
+					javascript({ jsx: true }),
+					EditorView.lineWrapping,
+					indentUnit.of(4),
+				]}
 				basicSetup={{
 					tabSize: 4,
 					mode: javascript(),
