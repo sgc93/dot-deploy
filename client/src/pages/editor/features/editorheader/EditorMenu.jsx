@@ -182,11 +182,11 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 	const dispatch = useDispatch();
 
 	const handleClick = (type, lngName) => {
-		console.log("creating ", type, " with ", lngName);
 		dispatch(resetCreatingModal());
 		dispatch(setNewProject({ type, lngName }));
 		dispatch(handleCreatingModal(true));
 		selectAction();
+		navigateTo("/editor/code");
 	};
 
 	const expandCreatingModal = () => {
