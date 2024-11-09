@@ -152,7 +152,7 @@ const AboutProject = ({ project, goToOwner }) => {
 					/>
 				</div>
 			</div>
-			<ResultFrame srcDoc={srcDoc} />
+			{!isSnippet && <ResultFrame srcDoc={srcDoc} />}
 			<div className="hidden sd:flex">
 				<CommentList
 					comments={comments}
