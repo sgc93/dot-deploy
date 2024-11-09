@@ -150,13 +150,6 @@ const EditorCodeBox = () => {
 	useEffect(() => {
 		let interval;
 		interval = setInterval(() => {
-			console.log(
-				autoSave,
-				hasCodeChanged,
-				Date.now() - lastSave,
-				notifyInterval,
-				lastSave
-			);
 			if (autoSave && hasCodeChanged) {
 				if (Date.now() - lastSave > notifyInterval) {
 					dispatch(resetNotifier());
