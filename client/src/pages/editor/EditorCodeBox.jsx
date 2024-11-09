@@ -15,7 +15,7 @@ import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
 import Editor from "./Editor";
 import EditorModal from "./EditorModal";
 import ResultTerminal from "./ResultTernimal";
-import { updateSplit } from "./editorSlice";
+import { updateLogs, updateSplit } from "./editorSlice";
 import SideMenu from "./features/sidebar/SideMenu";
 
 const CodeBoxHeader = ({ lngName }) => {
@@ -143,6 +143,7 @@ const EditorCodeBox = () => {
 			<script>${jsCode}</script>
 		</html>
 		`;
+	const date = new Date();
 
 	const dispatch = useDispatch();
 
@@ -160,6 +161,14 @@ const EditorCodeBox = () => {
 				if (Date.now() - lastSave > notifyInterval) {
 					dispatch(resetNotifier());
 					dispatch(setNotifier({ warning: "You have unsaved changes" }));
+					dispatch(
+						updateLogs(
+							JSON.stringify({
+								type: "warning",
+								warning: `You have unsaved changes - ${date.toISOString()}`,
+							})
+						)
+					);
 				}
 			}
 		}, notifyInterval * 1000);
