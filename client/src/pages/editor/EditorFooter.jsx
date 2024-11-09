@@ -12,6 +12,8 @@ const EditorFooter = () => {
 		useSelector((state) => state.setting);
 	const { project, currLng } = useSelector((state) => state.project);
 	const { logs, editorNotifications } = useSelector((state) => state.editor);
+	const allLogs = logs.map((log) => JSON.parse(log));
+	const errors = allLogs.filter((log) => log.type === "error");
 
 	const dispatch = useDispatch();
 
@@ -47,12 +49,12 @@ const EditorFooter = () => {
 				<div
 					className="relative flex items-center gap-1 transition-all duration-500 hover:text-slate-200 hover:bg-slate-600 hover:bg-opacity-30 px-2 rounded-md cursor-pointer w-max"
 					onMouseEnter={() =>
-						showAbout({ error: `Editor Errors: ${logs.length}` })
+						showAbout({ error: `Editor Errors: ${errors.length}` })
 					}
 					onMouseLeave={() => dispatch(resetNotifier())}
 				>
-					<span className={`${logs.length > 0 ? "text-color-3" : ""}`}>
-						errors: {logs.length}
+					<span className={`${errors.length > 0 ? "text-color-3" : ""}`}>
+						errors: {errors.length}
 					</span>
 				</div>
 			</div>
