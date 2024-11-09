@@ -69,6 +69,7 @@ const PostContent = ({ post }) => {
 					name={post.owner.name}
 					avatarUrl={post.owner.avatarUrl}
 					projectName={post.title}
+					onProject={() => {}}
 				/>
 				<div className="hidden sm:flex">
 					<BackBtn />
