@@ -5,12 +5,10 @@ import BackBtn from "../../../../ui/BackBtn";
 import CodeBox from "../../../../ui/CodeBox";
 import Error from "../../../../ui/Error";
 import Loading from "../../../../ui/Loading";
-import UserName from "../../../../ui/UserName";
 import { detailDataRequest, openSidebar } from "../../communitySlice";
 import CommUserName from "../../CommUserName";
 import AboutProject from "./AboutProject";
 import CommentList from "./CommentList";
-import DetailProjectList from "./DetailProjectList";
 
 const ProjectDetail = () => {
 	const { id } = useParams();
@@ -48,7 +46,7 @@ const ProjectDetail = () => {
 			</div>
 			{project && !isDetailing && !detailingError && (
 				<>
-					<div className="flex flex-col sd:flex-row gap-7 sd:h-3/4 w-full p-5 sm:p-7">
+					<div className="flex flex-col sd:flex-row gap-7 sd:h-[94dvh] w-full p-5 sm:p-7">
 						<AboutProject goToOwner={goToOwner} project={project} />
 						<CodeBox project={project} height={"h-full"} width={"sd:w-1/2"} />
 						<div className="flex sd:hidden">
@@ -59,20 +57,6 @@ const ProjectDetail = () => {
 								classes={"small-scroll h-[12rem]"}
 							/>
 						</div>
-					</div>
-					<div className="flex flex-col gap-3 m-7 mt-0 mb-3 rounded-md flex-grow">
-						<div className=" flex items-center gap-2 p-3">
-							<span>Other projects by</span>
-							<UserName
-								name={project.owner.name}
-								avatarUrl={project.owner.avatarUrl}
-								onOwner={goToOwner}
-							/>
-						</div>
-						<DetailProjectList
-							projects={project.owner.projects}
-							ownerId={project.owner._id}
-						/>
 					</div>
 				</>
 			)}
