@@ -1,3 +1,6 @@
+import { javascript } from "@codemirror/lang-javascript";
+import { indentUnit } from "@codemirror/language";
+import CodeMirror, { EditorView } from "@uiw/react-codemirror";
 import { useEffect, useState } from "react";
 import { BiInfoCircle, BiXCircle } from "react-icons/bi";
 import { FiMessageCircle } from "react-icons/fi";
@@ -10,9 +13,7 @@ import SplitPane, { Pane } from "split-pane-react";
 import { overridingScript } from "../../utils/constants";
 import { updateLogs } from "./editorSlice";
 
-const ErrorLog = ({ log }) => {
-	const error = log.err;
-
+const ErrorBox = ({ error }) => {
 	return (
 		<div
 			className={`flex items-start gap-2 bg-[#70474764] bg-opacity-30 p-3 rounded-lg
@@ -36,7 +37,20 @@ const ErrorLog = ({ log }) => {
 	);
 };
 
-const MessageLog = ({ log }) => {
+const ErrorLog = ({ logs }) => {
+	return (
+		<div
+			className={`w-full flex flex-col gap-2 p-2 border-b-[1px] border-[#555] `}
+		>
+			{logs.map(
+				(log, index) =>
+					log.type === "error" && <ErrorBox key={index} error={log.err} />
+			)}
+		</div>
+	);
+};
+
+const MessageBox = ({ message }) => {
 	return (
 		<div
 			className={`text-slate-300 bg-color-5 bg-opacity-20 rounded-md flex items-start gap-3 border-b-[1px] border-[#555] p-1 active:bg-color-7  active:text-white justify-between`}
@@ -45,14 +59,28 @@ const MessageLog = ({ log }) => {
 				<div>
 					<IoIosArrowForward className="self-start mt-1" />
 				</div>
-				{log.message} sdljf dlfjsdf sdlfjsldfjsldfsdflsd sdlfjs
-				<span></span>{" "}
+				<span>{message}</span>
 			</div>
-			<span className="text-color-5">{log.source}</span>
 		</div>
 	);
 };
-const WarningLog = ({ log }) => {
+
+const MessageLog = ({ logs }) => {
+	return (
+		<div
+			className={`w-full flex flex-col gap-2 p-2 border-b-[1px] border-[#555] `}
+		>
+			{logs.map(
+				(log, index) =>
+					log.type === "message" && (
+						<MessageBox key={index} message={log.message} />
+					)
+			)}
+		</div>
+	);
+};
+
+const WarningBox = ({ warn }) => {
 	return (
 		<div
 			className={`text-yellow-200 bg-yellow-300 bg-opacity-20 rounded-md flex items-start gap-3 border-b-[1px] border-[#555] p-1 active:bg-yellow-700  active:text-white justify-between `}
@@ -61,27 +89,85 @@ const WarningLog = ({ log }) => {
 				<div>
 					<PiWarningFill className="self-start mt-1" />
 				</div>
-				{log.message} sdljf dlfjsdf sdlfjsldfjsldfsdflsd sdlfjs
+				{warn}
 				<span></span>{" "}
 			</div>
-			<span className="text-color-5">{log.source}</span>
 		</div>
 	);
 };
 
-const InfoLog = ({ log }) => {
+const WarningLog = ({ logs }) => {
 	return (
 		<div
-			className={`text-slate-200 flex items-start justify-between gap-3 border-b-[1px] border-[#555] py-1 active:bg-slate-500`}
+			className={`w-full flex flex-col gap-2 p-2 border-b-[1px] border-[#555] `}
 		>
-			<div className="flex gap-2">
-				<div>
-					<IoIosArrowForward className="self-start mt-1" />
-				</div>
-				{log.message}
-				<span></span>{" "}
+			{logs.map(
+				(log, index) =>
+					log.type === "warning" && (
+						<WarningBox key={index} warn={log.warning} />
+					)
+			)}
+		</div>
+	);
+};
+
+const InfoBox = ({ info }) => {
+	const [isHidden, setIsHidden] = useState(false);
+
+	return (
+		<div className="w-full text-slate-200 flex items-start gap-1">
+			<div
+				className="flex cursor-pointer text-slate-400 transition-all duration-300 hover:text-slate-50 self-start mt-1"
+				onClick={() => setIsHidden((is) => !is)}
+			>
+				<IoIosArrowForward
+					className={`transition-all duration-400 ${
+						isHidden ? "rotate-90" : "rotate-0"
+					}`}
+				/>
 			</div>
-			<span className="text-color-5">{log.source}</span>
+			{isHidden ? (
+				<div className="text-slate-300">{`Current project data {...}`}</div>
+			) : (
+				<div className="flex-grow h-max code-scroll ">
+					<CodeMirror
+						readOnly
+						value={info}
+						height={"100%"}
+						width={"100%"}
+						theme={"dark"}
+						extensions={[
+							javascript(),
+							EditorView.lineWrapping,
+							indentUnit.of(4),
+						]}
+						basicSetup={{
+							lineNumbers: false,
+							tabSize: 4,
+							mode: javascript(),
+							syntaxHighlighting: true,
+							foldGutter: true,
+						}}
+						style={{
+							fontSize: "20px",
+							paddingLeft: "",
+						}}
+					/>
+				</div>
+			)}
+		</div>
+	);
+};
+
+const InfoLog = ({ logs }) => {
+	return (
+		<div
+			className={`w-full flex flex-col gap-1 border-b-[1px] border-[#555] py-1 `}
+		>
+			{logs.map(
+				(log, index) =>
+					log.type === "info" && <InfoBox key={index} info={log.info} />
+			)}
 		</div>
 	);
 };
@@ -94,11 +180,11 @@ const Terminal = ({ srcDoc, isOutput }) => {
 
 	const allLogs = logs.map((log) => JSON.parse(log));
 	const errors = allLogs.filter((log) => log.type === "error");
-	const infos = allLogs.filter((log) => log.type === "log");
+	const infos = allLogs.filter((log) => log.type === "info");
 	const warnings = allLogs.filter((log) => log.type === "warning");
 	const messages = allLogs.filter((log) => log.type === "message");
 
-	const [selectedLog, setSelectedLog] = useState("error");
+	const [selectedLog, setSelectedLog] = useState("info");
 	let currLogs = [];
 	if (selectedLog === "message") {
 		currLogs = messages;
@@ -228,20 +314,12 @@ const Terminal = ({ srcDoc, isOutput }) => {
 					</Pane>
 					<Pane minSize={"50%"}>
 						<div
-							className={`flex flex-col gap-2 h-full w-full p-2 bg-[#5555553c] bg-opacity-50 text-white border-l-[1px] border-[#555] overflow-x-hidden overflow-y-scroll code-scroll`}
+							className={`flex flex-col gap-2 h-full w-full bg-[#5555553c] bg-opacity-50 text-white border-l-[1px] border-[#555] overflow-x-hidden overflow-y-scroll code-scroll`}
 						>
-							{currLogs &&
-								currLogs.map((log, index) =>
-									selectedLog === "message" ? (
-										<MessageLog key={index} log={log} />
-									) : selectedLog === "error" ? (
-										<ErrorLog key={index} log={log} />
-									) : selectedLog === "warning" ? (
-										<WarningLog key={index} log={log} />
-									) : (
-										<InfoLog key={index} log={log} />
-									)
-								)}
+							{selectedLog === "message" && <MessageLog logs={currLogs} />}
+							{selectedLog === "error" && <ErrorLog logs={currLogs} />}
+							{selectedLog === "warning" && <WarningLog logs={currLogs} />}
+							{selectedLog === "info" && <InfoLog logs={currLogs} />}
 							{selectLog !== "error" && (
 								<div className="text-slate-400">
 									<IoIosArrowForward />
