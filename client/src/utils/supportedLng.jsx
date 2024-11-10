@@ -1,4 +1,4 @@
-import { FaCss3, FaJava, FaJs, FaPython } from "react-icons/fa";
+import { FaCss3, FaJava, FaJs, FaPython, FaReact } from "react-icons/fa";
 import {
 	SiCsharp,
 	SiGo,
@@ -29,6 +29,12 @@ export const supportedLng = [
 		icon: <FaCss3 className=" text-cyan-400" size={12} />,
 		extension: "css",
 		lngName: "css",
+	},
+	{
+		title: "component",
+		icon: <FaReact className=" text-cyan-500" size={12} />,
+		extension: "jsx",
+		lngName: "react",
 	},
 	{
 		title: "main",
