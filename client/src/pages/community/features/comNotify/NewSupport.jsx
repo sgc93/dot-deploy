@@ -2,8 +2,8 @@ import { useEditorOpen } from "../../../../hooks/useEditorOpen";
 import { getLngInfo } from "../../../../utils/helpers";
 
 const lng = {
-	lngName: "csharp",
-	description: "Our code editor supports swift starting from today",
+	lngName: "react",
+	description: "Our code editor supports REACT starting from today",
 };
 const NewSupport = () => {
 	const openEditor = useEditorOpen();
