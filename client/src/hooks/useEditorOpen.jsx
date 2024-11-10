@@ -21,7 +21,7 @@ export const useEditorOpen = () => {
 	const navigateTo = useNavigate();
 	const dispatch = useDispatch();
 
-	const openEditor = (type, lng, project) => {
+	const openEditor = (type, lngName, project) => {
 		dispatch(resetEditor());
 		dispatch(resetCurrProject());
 		dispatch(resetCreatingModal());
@@ -46,8 +46,10 @@ export const useEditorOpen = () => {
 				})
 			);
 			if (type === "ui") {
+				dispatch(updateSelectedLng({ code: project.code.html, lng: "html" }));
 				dispatch(handleTerminal(true));
 			} else {
+				dispatch(updateSelectedLng({ code: project.code.code, lng: lngName }));
 				dispatch(handleTerminal(false));
 			}
 		}
