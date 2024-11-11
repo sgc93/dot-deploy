@@ -8,6 +8,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
+import JSXParser from "react-jsx-parser";
 import { useDispatch, useSelector } from "react-redux";
 import SplitPane, { Pane } from "split-pane-react";
 import { overridingScript } from "../../utils/constants";
@@ -175,7 +176,7 @@ const InfoLog = ({ logs }) => {
 const Terminal = ({ srcDoc, isOutput }) => {
 	srcDoc = srcDoc.replace("/override/", overridingScript);
 	const { logs } = useSelector((state) => state.editor);
-	const { project, currLng } = useSelector((state) => state.project);
+	const { project, currLng, currCode } = useSelector((state) => state.project);
 	const [sizes, setSizes] = useState([30, 70]);
 
 	const allLogs = logs.map((log) => JSON.parse(log));
@@ -231,14 +232,25 @@ const Terminal = ({ srcDoc, isOutput }) => {
 
 	return (
 		<div className="h-[90%] border-l-[1px] border-r-[1px] border-[#353a47] flex flex-grow ">
-			<iframe
-				srcDoc={srcDoc}
-				title="output"
-				height={"100%"}
-				width={"100%"}
-				sandbox="allow-scripts"
-				className={`${isOutput ? "flex" : "hidden"} `}
-			/>
+			{currLng === "react" ? (
+				<div className={`${isOutput ? "flex" : "hidden"} relative p-5`}>
+					<JSXParser
+						bindings={{}}
+						jsx={currCode}
+						autoCloseVoidElements
+						onError={(error) => console.log(error)}
+					/>
+				</div>
+			) : (
+				<iframe
+					srcDoc={srcDoc}
+					title="output"
+					height={"100%"}
+					width={"100%"}
+					sandbox="allow-scripts"
+					className={`${isOutput ? "flex" : "hidden"} `}
+				/>
+			)}
 
 			<div
 				className={`${
