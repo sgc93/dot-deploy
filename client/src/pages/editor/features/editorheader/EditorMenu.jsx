@@ -599,10 +599,9 @@ const EditorMenu = ({ show, setShow }) => {
 					},
 					{
 						title: "Terminal",
-						isDisabled: isSnippet || isCreating || isPublishing,
+						isDisabled: isCreating || isPublishing,
 						isLink: true,
-						click: () =>
-							onTerminalClick(isSnippet || isCreating || isPublishing),
+						click: () => onTerminalClick(isCreating || isPublishing),
 					},
 					{ title: "Help", isDisabled: isCreating || isPublishing },
 				].map((tab, index) => (

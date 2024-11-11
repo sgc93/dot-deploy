@@ -60,9 +60,7 @@ const Settings = () => {
 	}, [editorPlaceHolder, dispatch]);
 
 	const onTerminal = () => {
-		if (!isSnippet) {
-			dispatch(handleTerminal(!showTerminal));
-		}
+		dispatch(handleTerminal(!showTerminal));
 	};
 
 	const onSplit = (dxr) => {
@@ -302,7 +300,7 @@ const Settings = () => {
 									<FaToggleOn className="text-slate-300" />
 								) : (
 									<FaToggleOff
-										className={`text-slate-600 transition-all duration-300 ${
+										className={`text-slate-400 transition-all duration-300 ${
 											!isSnippet && "hover:text-slate-300"
 										}`}
 									/>
