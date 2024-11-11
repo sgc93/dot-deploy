@@ -8,7 +8,7 @@ const initialState = {
 	lineNo: true,
 	holder: "",
 	foldGut: true,
-	notifyInterval: 30,
+	notifyInterval: 60,
 };
 
 export const settingSlice = createSlice({
