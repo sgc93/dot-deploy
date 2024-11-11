@@ -153,12 +153,13 @@ const AboutProject = ({ project, goToOwner }) => {
 					/>
 				</div>
 			</div>
-			{!isSnippet && (
-				<>
-					<ResultFrame srcDoc={srcDoc} />
-					<div className="flex border-b-[1px] border-[#555]" />
-				</>
-			)}
+			{!isSnippet ||
+				(project.lngName === "react" && (
+					<>
+						<ResultFrame srcDoc={srcDoc} />
+						<div className="flex border-b-[1px] border-[#555]" />
+					</>
+				))}
 			<div className="hidden sd:flex">
 				<CommentList
 					comments={comments}
