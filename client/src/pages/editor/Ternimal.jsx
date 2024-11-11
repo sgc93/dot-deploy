@@ -8,11 +8,11 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
-import JSXParser from "react-jsx-parser";
 import { useDispatch, useSelector } from "react-redux";
 import SplitPane, { Pane } from "split-pane-react";
 import { overridingScript } from "../../utils/constants";
 import { updateLogs } from "./editorSlice";
+import UserReactComponent from "./UserReactComponent";
 
 const ErrorBox = ({ error }) => {
 	return (
@@ -234,12 +234,7 @@ const Terminal = ({ srcDoc, isOutput }) => {
 		<div className="h-[90%] border-l-[1px] border-r-[1px] border-[#353a47] flex flex-grow ">
 			{currLng === "react" ? (
 				<div className={`${isOutput ? "flex" : "hidden"} relative p-5`}>
-					<JSXParser
-						bindings={{}}
-						jsx={currCode}
-						autoCloseVoidElements
-						onError={(error) => console.log(error)}
-					/>
+					<UserReactComponent userJsx={currCode} />
 				</div>
 			) : (
 				<iframe
