@@ -4,8 +4,9 @@ import CodeMirror, { EditorView, keymap, oneDark } from "@uiw/react-codemirror";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useCode } from "../../hooks/useCode";
+import { getLngInfo } from "../../utils/helpers";
 
-const Editor = ({ code, mode }) => {
+const Editor = ({ code }) => {
 	const { codeFontSize, codeTabSize, closeBrackets, lineNo, foldGut, holder } =
 		useSelector((state) => state.setting);
 	const { searchPanel } = useSelector((state) => state.editor);
@@ -14,6 +15,8 @@ const Editor = ({ code, mode }) => {
 	const [editorView, setEditorView] = useState(null);
 	const updateCode = useCode();
 	const editorRef = useRef();
+
+	const mode = getLngInfo(currLng).mode;
 
 	// Initialize the editor view and store a reference to it
 	const handleEditorCreate = (view) => setEditorView(view);

@@ -11,6 +11,7 @@ const ResultTerminal = ({ srcDoc, resizeTerminal }) => {
 	const { logs, isOutput } = useSelector((state) => state.editor);
 	const dispatch = useDispatch();
 	const projectName = project.name;
+	const hasOutput = project.type === "ui" || project.lngName === "react";
 
 	const [isResizedFull, setIsResizedFull] = useState(false);
 	const [isSizerHovered, setIsSizerHovered] = useState(false);
@@ -37,7 +38,7 @@ const ResultTerminal = ({ srcDoc, resizeTerminal }) => {
 		<div className="w-full h-full bg-[#22252dca] flex flex-col">
 			<div className=" bg-[#353a47]  p-2 flex items-center justify-between shadow-sm shadow-n-14">
 				<div className="flex items-center gap-3">
-					{["html", "react"].includes(project.lngName) && (
+					{hasOutput && (
 						<div className="relative flex items-center justify-center">
 							<button
 								className={`uppercase font-code text-sm transition-all duration-300 hover:text-color-2 border-b-[1px] pb-[2px] ${

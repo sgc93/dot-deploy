@@ -47,6 +47,8 @@ const AboutProject = ({ project, goToOwner }) => {
 		</html>
 		`;
 
+	const hasOutput = !isSnippet || project.lngName === "react";
+
 	const openEditor = useEditorOpen();
 	const navigateTo = useNavigate();
 	const dispatch = useDispatch();
@@ -153,13 +155,14 @@ const AboutProject = ({ project, goToOwner }) => {
 					/>
 				</div>
 			</div>
-			{!isSnippet ||
-				(project.lngName === "react" && (
-					<>
-						<ResultFrame srcDoc={srcDoc} />
-						<div className="flex border-b-[1px] border-[#555]" />
-					</>
-				))}
+			{hasOutput && (
+				<>
+					<ResultFrame
+						code={project.lngName === "react" ? project.code.code : srcDoc}
+					/>
+					<div className="flex border-b-[1px] border-[#555]" />
+				</>
+			)}
 			<div className="hidden sd:flex">
 				<CommentList
 					comments={comments}
