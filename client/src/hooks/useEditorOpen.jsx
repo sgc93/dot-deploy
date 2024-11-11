@@ -33,10 +33,8 @@ export const useEditorOpen = () => {
 				dispatch(
 					updateSelectedLng({ code: project.code.code, lng: project.lngName })
 				);
-				dispatch(handleTerminal(false));
 			} else {
 				dispatch(updateSelectedLng({ code: project.code.html, lng: "html" }));
-				dispatch(handleTerminal(true));
 			}
 		} else {
 			dispatch(
@@ -47,10 +45,8 @@ export const useEditorOpen = () => {
 			);
 			if (type === "ui") {
 				dispatch(updateSelectedLng({ code: project.code.html, lng: "html" }));
-				dispatch(handleTerminal(true));
 			} else {
 				dispatch(updateSelectedLng({ code: project.code.code, lng: lngName }));
-				dispatch(handleTerminal(false));
 			}
 		}
 
@@ -64,6 +60,8 @@ export const useEditorOpen = () => {
 				})
 			)
 		);
+
+		dispatch(handleTerminal(true));
 		dispatch(selectMenu({ name: "explore", title: "Explore" }));
 		navigateTo("/editor/code");
 		dispatch(setLastSave({ at: Date.now(), project }));
