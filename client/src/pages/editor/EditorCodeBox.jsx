@@ -104,9 +104,7 @@ const CodeBoxHeader = ({ lngName }) => {
 };
 
 const EditorCodeBox = () => {
-	const { project, currLng, currCode, isNew } = useSelector(
-		(state) => state.project
-	);
+	const { project, currLng, currCode } = useSelector((state) => state.project);
 	const { isCreating, showTerminal, showSideMenu, splitDxr, isPublishing } =
 		useSelector((state) => state.editor);
 	const { autoSave, notifyInterval } = useSelector((state) => state.setting);
@@ -128,11 +126,17 @@ const EditorCodeBox = () => {
 	const code = currCode;
 
 	const selectedMode =
-		lng === "html" ? html() : lng === "css" ? css() : javascript();
+		lng === "react"
+			? javascript({ jsx: true })
+			: lng === "html"
+			? html()
+			: lng === "css"
+			? css()
+			: javascript();
 
 	const [sizes, setSizes] = useState(showTerminal ? [70, 30] : [100, 0]);
 	const [horizSizes, setHorizSizes] = useState([15, 85]);
-
+	5;
 	const srcDoc = `
 		<html>
 			<style>${cssCode} </style>
