@@ -4,11 +4,12 @@ import { BsFileCode } from "react-icons/bs";
 import { CgCommunity } from "react-icons/cg";
 import { FaCss3, FaJs } from "react-icons/fa";
 import { GoPaste } from "react-icons/go";
+import { GrReactjs } from "react-icons/gr";
 import { ImFileZip } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdClose, MdDelete, MdMenu } from "react-icons/md";
 import { PiCodeBold } from "react-icons/pi";
-import { RxComponent2 } from "react-icons/rx";
+import { RiHtml5Line } from "react-icons/ri";
 import { SiHtml5 } from "react-icons/si";
 import {
 	TbCopy,
@@ -298,7 +299,7 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 						onClick={() => handleClick("ui", "html")}
 					>
 						<div className="text-slate-300">
-							<RxComponent2 size={13} />
+							<RiHtml5Line size={13} />
 						</div>
 						<div className="flex flex-col gap-1 -mt-[5px]">
 							<span className="text-slate-300">New Ui-component</span>
@@ -320,6 +321,34 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 								"
 								>
 									Javascript
+								</span>{" "}
+								with integrated output displayer terminal.
+							</span>
+						</div>
+					</div>
+					<div
+						className="flex gap-2 transition-all duration-300 hover:bg-slate-400 hover:bg-opacity-20 cursor-pointer p-2 mt-1"
+						onClick={() => handleClick("snippet", "react")}
+					>
+						<div className="text-slate-300">
+							<GrReactjs size={13} />
+						</div>
+						<div className="flex flex-col gap-1 -mt-[5px]">
+							<span className="text-slate-300">New Ui-component</span>
+							<span className="text-slate-400 text-sm">
+								With{" "}
+								<span
+									className="text-cyan-500 font-semibold font-sans
+								"
+								>
+									React
+								</span>{" "}
+								and{" "}
+								<span
+									className="text-green-400 font-semibold font-sans
+								"
+								>
+									tailwindcss
 								</span>{" "}
 								with integrated output displayer terminal.
 							</span>
@@ -539,8 +568,6 @@ const EditorMenu = ({ show, setShow }) => {
 		isCreatingModalMinimized,
 		isPublishingModalMinimized,
 	} = useSelector((state) => state.editor);
-	const { project } = useSelector((state) => state.project);
-	const isSnippet = project.type === "snippet";
 	const [selectedTab, setSelectedTab] = useState("");
 	const dispatch = useDispatch();
 
