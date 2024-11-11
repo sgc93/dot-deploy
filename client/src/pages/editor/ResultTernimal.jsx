@@ -37,23 +37,25 @@ const ResultTerminal = ({ srcDoc, resizeTerminal }) => {
 		<div className="w-full h-full bg-[#22252dca] flex flex-col">
 			<div className=" bg-[#353a47]  p-2 flex items-center justify-between shadow-sm shadow-n-14">
 				<div className="flex items-center gap-3">
-					<div className="relative flex items-center justify-center">
-						<button
-							className={`uppercase font-code text-sm transition-all duration-300 hover:text-color-2 border-b-[1px] pb-[2px] ${
-								isOutput
-									? "border-color-2 text-color-2"
-									: "border-transparent text-slate-300"
-							}`}
-							onClick={() => updateOutput(true)}
-							onMouseEnter={() => setIsResultHovered(true)}
-							onMouseLeave={() => setIsResultHovered(false)}
-						>
-							Result
-						</button>
-						{isResultHovered && (
-							<EditorToolTip dxr={"up"} content={"Ui Result"} />
-						)}
-					</div>
+					{["html", "react"].includes(project.lngName) && (
+						<div className="relative flex items-center justify-center">
+							<button
+								className={`uppercase font-code text-sm transition-all duration-300 hover:text-color-2 border-b-[1px] pb-[2px] ${
+									isOutput
+										? "border-color-2 text-color-2"
+										: "border-transparent text-slate-300"
+								}`}
+								onClick={() => updateOutput(true)}
+								onMouseEnter={() => setIsResultHovered(true)}
+								onMouseLeave={() => setIsResultHovered(false)}
+							>
+								Result
+							</button>
+							{isResultHovered && (
+								<EditorToolTip dxr={"up"} content={"Ui Result"} />
+							)}
+						</div>
+					)}
 					<div className="relative flex items-center justify-center">
 						<button
 							className={`uppercase font-code text-sm transition-all duration-300 hover:text-color-2 border-b-[1px] pb-[2px] ${

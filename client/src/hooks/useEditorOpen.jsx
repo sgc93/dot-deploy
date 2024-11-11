@@ -7,6 +7,7 @@ import {
 	resetEditor,
 	resetLogs,
 	resetPublishingModal,
+	setOutputTerminal,
 	updateLogs,
 } from "../pages/editor/editorSlice";
 import { setLastSave } from "../pages/editor/features/editorheader/saveSlice";
@@ -33,8 +34,14 @@ export const useEditorOpen = () => {
 				dispatch(
 					updateSelectedLng({ code: project.code.code, lng: project.lngName })
 				);
+				if (lngName === "react") {
+					dispatch(setOutputTerminal(true));
+				} else {
+					dispatch(setOutputTerminal(false));
+				}
 			} else {
 				dispatch(updateSelectedLng({ code: project.code.html, lng: "html" }));
+				dispatch(setOutputTerminal(true));
 			}
 		} else {
 			dispatch(
@@ -44,8 +51,14 @@ export const useEditorOpen = () => {
 				})
 			);
 			if (type === "ui") {
+				dispatch(setOutputTerminal(true));
 				dispatch(updateSelectedLng({ code: project.code.html, lng: "html" }));
 			} else {
+				if (lngName === "react") {
+					dispatch(setOutputTerminal(true));
+				} else {
+					dispatch(setOutputTerminal(false));
+				}
 				dispatch(updateSelectedLng({ code: project.code.code, lng: lngName }));
 			}
 		}
