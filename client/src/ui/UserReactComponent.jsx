@@ -14,8 +14,7 @@ function isValidJSX(jsxString) {
 }
 
 function UserReactComponent({ userJsx }) {
-	// Sanitize and compile JSX
-	// const sanitizedJsx = DOMPurify.sanitize(userJsx);
+	console.log(userJsx);
 	if (isValidJSX(userJsx)) {
 		return (
 			<div className="relative p-5">
@@ -27,7 +26,7 @@ function UserReactComponent({ userJsx }) {
 			</div>
 		);
 	} else {
-		return <div>invalid jsx</div>;
+		return <div className="">invalid jsx</div>;
 	}
 }
 
