@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { FaHtml5 } from "react-icons/fa";
 import { ImShare } from "react-icons/im";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdArrowForward } from "react-icons/md";
 import { PiCodeBold } from "react-icons/pi";
-import { RxComponent2 } from "react-icons/rx";
+import { SiReact } from "react-icons/si";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LngTab from "../../../../ui/LngTab";
@@ -40,7 +41,7 @@ const CreateModal = ({ exitSelecting, setIsPosting }) => {
 				onClick={() => handleClick("ui", "")}
 			>
 				<div className="text-slate-300">
-					<RxComponent2 size={13} />
+					<FaHtml5 size={13} />
 				</div>
 				<div className="flex flex-col gap-1 -mt-[5px]">
 					<span className="text-slate-300">New Ui-component</span>
@@ -61,6 +62,34 @@ const CreateModal = ({ exitSelecting, setIsPosting }) => {
 							Javascript
 						</span>{" "}
 						with integrated output displayer terminal
+					</span>
+				</div>
+			</div>
+			<div
+				className="flex gap-2 transition-all duration-300 hover:bg-slate-400 hover:bg-opacity-20 cursor-pointer p-2 mt-1"
+				onClick={() => handleClick("snippet", "react")}
+			>
+				<div className="text-slate-300">
+					<SiReact size={13} />
+				</div>
+				<div className="flex flex-col gap-1 -mt-[5px]">
+					<span className="text-slate-300">New Ui-component</span>
+					<span className="text-slate-400 text-sm">
+						With{" "}
+						<span
+							className="text-cyan-500 font-semibold font-sans
+								"
+						>
+							React
+						</span>{" "}
+						and{" "}
+						<span
+							className="text-green-400 font-semibold font-sans
+								"
+						>
+							tailwindcss
+						</span>{" "}
+						with integrated output displayer terminal.
 					</span>
 				</div>
 			</div>
