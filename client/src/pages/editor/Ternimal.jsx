@@ -10,9 +10,9 @@ import { MdClose } from "react-icons/md";
 import { PiWarningFill } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import SplitPane, { Pane } from "split-pane-react";
+import UserReactComponent from "../../ui/UserReactComponent";
 import { overridingScript } from "../../utils/constants";
 import { updateLogs } from "./editorSlice";
-import UserReactComponent from "./UserReactComponent";
 
 const ErrorBox = ({ error }) => {
 	return (

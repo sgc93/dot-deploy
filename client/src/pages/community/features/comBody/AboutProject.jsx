@@ -6,6 +6,7 @@ import { useEditorOpen } from "../../../../hooks/useEditorOpen";
 import BackBtn from "../../../../ui/BackBtn";
 import LngName from "../../../../ui/LngName";
 import UserName from "../../../../ui/UserName";
+import UserReactComponent from "../../../../ui/UserReactComponent";
 import { isCurrUserLiked } from "../../../../utils/validators";
 import { likeRequest } from "../../communitySlice";
 import CommentList from "./CommentList";
@@ -76,6 +77,8 @@ const AboutProject = ({ project, goToOwner }) => {
 			navigateTo("/login");
 		}
 	};
+
+	console.log(project);
 
 	return (
 		<div className="sd:w-1/2 flex flex-col gap-3 bg-slate-800 bg-opacity-70 border-[1px] border-slate-800 rounded-md p-3">
@@ -157,9 +160,15 @@ const AboutProject = ({ project, goToOwner }) => {
 			</div>
 			{hasOutput && (
 				<>
-					<ResultFrame
-						code={project.lngName === "react" ? project.code.code : srcDoc}
-					/>
+					<div className="flex items-center justify-center flex-grow h-44 bg-n-14 border-[1px] border-[#555] ">
+						{project.lngName === "react" ? (
+							<div className="relative p-5">
+								<UserReactComponent userJsx={project.code.code} />
+							</div>
+						) : (
+							<ResultFrame srcDoc={srcDoc} />
+						)}{" "}
+					</div>
 					<div className="flex border-b-[1px] border-[#555]" />
 				</>
 			)}
