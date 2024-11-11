@@ -34,7 +34,7 @@ export const useEditorOpen = () => {
 				dispatch(
 					updateSelectedLng({ code: project.code.code, lng: project.lngName })
 				);
-				if (lngName === "react") {
+				if (project.lngName === "react") {
 					dispatch(setOutputTerminal(true));
 				} else {
 					dispatch(setOutputTerminal(false));
