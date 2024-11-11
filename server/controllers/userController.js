@@ -101,7 +101,6 @@ exports.deleteMe = catchAsync(async (req, res) => {
 		active: false,
 	});
 
-	console.log(inActivatedUser);
 	res.status(204).json({
 		status: "success",
 		data: null,

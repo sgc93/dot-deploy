@@ -78,8 +78,6 @@ const AboutProject = ({ project, goToOwner }) => {
 		}
 	};
 
-	console.log(project);
-
 	return (
 		<div className="sd:w-1/2 flex flex-col gap-3 bg-slate-800 bg-opacity-70 border-[1px] border-slate-800 rounded-md p-3">
 			<div className="flex items-start justify-between bg-slate-800 bg-opacity-60 px-4 py-3 rounded-md">

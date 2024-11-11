@@ -14,7 +14,6 @@ function isValidJSX(jsxString) {
 }
 
 function UserReactComponent({ userJsx }) {
-	console.log(userJsx);
 	if (isValidJSX(userJsx)) {
 		return (
 			<div className="relative p-5">

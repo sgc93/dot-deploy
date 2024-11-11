@@ -96,8 +96,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 		token = req.cookies.jwt;
 	}
 
-	console.log("from protect:", token);
-
 	if (!token) {
 		return next(new AppError("No token is found!", 401));
 	}
