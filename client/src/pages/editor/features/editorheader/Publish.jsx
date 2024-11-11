@@ -16,7 +16,7 @@ import { setAutoSave } from "../sidebar/settingSlice";
 const Publish = ({ selectAction }) => {
 	const { isUserSignedIn } = useSelector((state) => state.auth);
 	const { isNew, project } = useSelector((state) => state.project);
-	const autoSave = useSelector((state) => state.setting.autoSave);
+	const { autoSave, notifyInterval } = useSelector((state) => state.setting);
 	const { savedProject } = useSelector((state) => state.save);
 	const { user } = useSelector((state) => state.auth);
 	const { isPublishingModalMinimized } = useSelector((state) => state.editor);
@@ -124,7 +124,7 @@ const Publish = ({ selectAction }) => {
 					</div>
 					<span>
 						<span className="text-color-5">Dotcode</span> will notify you to
-						save your changes if there is any in 60 sec interval
+						save your changes if there is any in {notifyInterval} sec interval
 					</span>
 				</div>
 			</div>
