@@ -10,6 +10,11 @@ import UserName from "../../ui/UserName";
 import { supportedLng } from "../../utils/supportedLng";
 import { isCurrUserLiked } from "../../utils/validators";
 import { getDataRequest } from "../community/communitySlice";
+import {
+	handleCreatingModal,
+	resetCreatingModal,
+	setNewProject,
+} from "../editor/editorSlice";
 
 const languages = supportedLng.reverse();
 
@@ -92,6 +97,13 @@ const DotCodeProfile = () => {
 			dispatch(getDataRequest());
 		}
 	}, [projects, dispatch]);
+
+	const open = (type, lngName) => {
+		dispatch(resetCreatingModal());
+		dispatch(setNewProject({ type, lngName }));
+		dispatch(handleCreatingModal(true));
+		navigateTo("/editor/code");
+	};
 
 	return (
 		<div className="flex flex-col gap-20 w-full h-full items-center px-10 py-20 bg-n-14 overflow-y-scroll code-area">
@@ -192,7 +204,7 @@ const DotCodeProfile = () => {
 				</p>
 				<button
 					className="px-6 py-3 bg-slate-600 bg-opacity-60 text-white sm:text-lg font-semibold rounded-md shadow-sm hover:bg-slate-500 transition ease-in-out duration-300"
-					onClick={() => openEditor("ui", "html")}
+					onClick={() => open("ui", "html")}
 				>
 					Start Now
 				</button>
@@ -223,7 +235,7 @@ const DotCodeProfile = () => {
 								<div
 									className="min-w-24 sm:min-w-44 md:min-w-64 h-[7rem] sm:h-[14rem] md:h-[17rem] flex flex-col items-center justify-between bg-black bg-opacity-25 rounded-lg px-2 pt-7 pb-3 sm:py-4 cursor-pointer transition-all duration-300 hover:bg-opacity-70"
 									key={index}
-									onClick={() => openEditor("snippet", lng.lngName)}
+									onClick={() => open("snippet", lng.lngName)}
 								>
 									<div className="scale-[3] sm:scale-[7] md:scale-[13] sm:mt-20">
 										{lng.icon}

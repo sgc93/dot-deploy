@@ -1,11 +1,25 @@
 import { TbNotification } from "react-icons/tb";
-import { useEditorOpen } from "../../../../hooks/useEditorOpen";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+	handleCreatingModal,
+	resetCreatingModal,
+	setNewProject,
+} from "../../../editor/editorSlice";
 import Footer from "../../../home/features/footer/Footer";
 import Background from "../../../home/features/hero/Background";
 import Content from "./Content";
 
 const Notification = () => {
-	const openEditor = useEditorOpen();
+	const dispatch = useDispatch();
+	const navigateTo = useNavigate();
+
+	const open = (type, lngName) => {
+		dispatch(resetCreatingModal());
+		dispatch(setNewProject({ type, lngName }));
+		dispatch(handleCreatingModal(true));
+		navigateTo("/editor/code");
+	};
 
 	return (
 		<div className="flex flex-wrap items-center gap-3 justify-between px-10 py-5 mx-10 md:mx-32 bg-n-5 bg-opacity-50 rounded-lg border-[1px] border-slate-700">
@@ -23,7 +37,7 @@ const Notification = () => {
 				</span>
 				<button
 					className=" px-4 py-2 bg-slate-700 rounded-full text-slate-300 transition-all duration-300 hover:text-slate-100 hover:bg-slate-600"
-					onClick={() => openEditor("ui", "html")}
+					onClick={() => open("ui", "html")}
 				>
 					try for free
 				</button>
