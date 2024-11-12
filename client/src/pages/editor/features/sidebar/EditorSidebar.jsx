@@ -18,8 +18,6 @@ import { selectMenu } from "./sidebarSlice";
 const SidebarTab = ({ tab }) => {
 	const selectedTab = useSelector((state) => state.sidebar.currTab);
 	const { showSideMenu, showTerminal } = useSelector((state) => state.editor);
-	const { project } = useSelector((state) => state.project);
-	const isSnippet = project.type === "snippet";
 
 	const dispatch = useDispatch();
 	const navigateTo = useNavigate();
@@ -30,12 +28,8 @@ const SidebarTab = ({ tab }) => {
 		if (tab.isDisabled) return;
 
 		if (tab.isLink) {
-			if (tab.isBtn) {
-				if (!isSnippet) {
-					dispatch(handleTerminal(!showTerminal));
-					dispatch(handleSideMenu(showSideMenu));
-					return;
-				}
+			if (tab.title === "Terminal") {
+				dispatch(handleTerminal(!showTerminal));
 			} else {
 				dispatch(resetEditor());
 				navigateTo(tab.link);
@@ -89,7 +83,6 @@ const EditorSidebar = () => {
 	const { isCreating, isPublishing } = useSelector((state) => state.editor);
 	const { user, isUserSignedIn } = useSelector((state) => state.auth);
 	const { project } = useSelector((state) => state.project);
-	const isSnippet = project.type === "snippet";
 
 	return (
 		<div className="h-full w-10 flex flex-col items-center bg-[#353b47] text-2xl sm:pb-2 border-r-[1px] border-slate-500">
@@ -112,7 +105,7 @@ const EditorSidebar = () => {
 					icon: <BiTerminal key={3} />,
 					name: "terminal",
 					title: "Terminal",
-					isDisabled: isCreating || isPublishing || isSnippet,
+					isDisabled: isCreating || isPublishing,
 					isLink: true,
 					isBtn: true,
 				},
