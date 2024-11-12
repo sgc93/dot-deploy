@@ -60,7 +60,7 @@ const UserReactComponent = ({ userJsx }) => {
 		);
 	} else {
 		return (
-			<div className="w-full relative p-5">
+			<div className="w-full h-full overflow-y-scroll relative p-5 code-area">
 				<div className="w-full flex items-center justify-center gap-2 bg-red-500 bg-opacity-20 border-2 border-red-500 p-5 rounded-md font-bold text-lg tracking-wider">
 					<span className="capitalize text-red-50">{err.message}</span>
 					<div className="flex items-center text-red-500">

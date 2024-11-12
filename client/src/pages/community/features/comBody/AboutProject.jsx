@@ -160,7 +160,7 @@ const AboutProject = ({ project, goToOwner }) => {
 				<>
 					<div className="flex items-center justify-center flex-grow h-44 bg-n-14 border-[1px] border-[#555] ">
 						{project.lngName === "react" ? (
-							<div className="relative p-5">
+							<div className="w-full h-full overflow-scroll relative p-5 code-area">
 								<UserReactComponent userJsx={project.code.code} />
 							</div>
 						) : (
