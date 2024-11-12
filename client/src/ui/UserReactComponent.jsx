@@ -46,8 +46,6 @@ const UserReactComponent = ({ userJsx }) => {
 		});
 	};
 
-	console.log(err);
-
 	if (!err) {
 		return (
 			<div className="relative p-5">
