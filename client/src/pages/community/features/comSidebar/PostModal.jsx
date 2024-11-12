@@ -1,4 +1,3 @@
-import { javascript } from "@codemirror/lang-javascript";
 import CodeMirror, { EditorView } from "@uiw/react-codemirror";
 import { useEffect, useState } from "react";
 import { BiCheck, BiTrash } from "react-icons/bi";
@@ -9,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Error from "../../../../ui/Error";
 import Loading from "../../../../ui/Loading";
+import { getLngInfo } from "../../../../utils/helpers";
 import { supportedLng } from "../../../../utils/supportedLng";
 import {
 	createPostRequest,
@@ -51,6 +51,8 @@ const CodeContent = ({ content, deleteContent, index, updateContent }) => {
 	const [code, setCode] = useState(content.value);
 	const [isSelectingLng, setIsSelectingLng] = useState(false);
 	const [selectedLng, setSelectedLng] = useState("js");
+
+	const mode = getLngInfo(selectedLng).mode;
 
 	useEffect(() => {
 		const codeContent = { type: "code", value: code, lngName: selectedLng };
@@ -107,10 +109,10 @@ const CodeContent = ({ content, deleteContent, index, updateContent }) => {
 					height={"100%"}
 					width={"100%"}
 					theme={"dark"}
-					extensions={[javascript(), EditorView.lineWrapping]}
+					extensions={[mode, EditorView.lineWrapping]}
 					basicSetup={{
 						tabSize: 4,
-						mode: javascript(),
+						mode: mode,
 						syntaxHighlighting: true,
 					}}
 					style={{
