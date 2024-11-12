@@ -1,35 +1,52 @@
 import * as Babel from "@babel/standalone";
 import { useEffect, useState } from "react";
 import JsxParser from "react-jsx-parser";
-
-const parseJsxError = (error) => {
-	const errorString = error.toString();
-	const match = errorString.match(/SyntaxError: (.+) \((\d+):(\d+)\)/);
-	if (match) {
-		const [, message, line, column] = match;
-
-		return { message, line, column, source: "component.jsx" };
-	}
-	return "Unknown error in JSX";
-};
+import { useDispatch } from "react-redux";
+import { updateLogs } from "../pages/editor/editorSlice";
 
 function isValidJSX(jsxString) {
 	try {
 		Babel.transform(jsxString, {
 			presets: ["react"],
 		});
-		return null; // No errors found
+		return null;
 	} catch (error) {
-		return parseJsxError(error); // Errors found
+		return { message: error.message, source: "parsing : component.jsx" };
 	}
 }
 
 const UserReactComponent = ({ userJsx }) => {
 	const [err, setErr] = useState(isValidJSX(userJsx));
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		setErr();
+		try {
+			Babel.transform(userJsx, {
+				presets: ["react"],
+			});
+			setErr(null);
+		} catch (error) {
+			setErr({
+				message: error.message.split("\n")[0],
+				source: "parsing : component.jsx",
+			});
+		}
 	}, [userJsx]);
+
+	useEffect(() => {
+		if (err) {
+			dispatch(updateLogs(JSON.stringify({ type: "error", err })));
+		}
+	}, [err, dispatch]);
+
+	const handleParseError = (error) => {
+		setErr({
+			message: `Rendering error: ${error.message}`,
+			source: "rendering: component.jsx",
+		});
+	};
+
+	console.log(err);
 
 	if (!err) {
 		return (
@@ -37,9 +54,7 @@ const UserReactComponent = ({ userJsx }) => {
 				<JsxParser
 					jsx={userJsx}
 					autoCloseVoidElements
-					onError={(error) =>
-						setErr({ message: `Rendering error: ${error.message}` })
-					}
+					onError={(error) => handleParseError(error)}
 				/>
 			</div>
 		);

@@ -28,7 +28,9 @@ const ErrorBox = ({ error }) => {
 					<span className="text-red-600 font-semibold">
 						{error.message.split(":")[0]}:
 					</span>
-					<span className="text-slate-300">{error.message.split(":")[1]}</span>
+					<span className="text-slate-300">
+						{error.message.split(":").slice(1).join(":")}
+					</span>
 				</div>
 				<span className="text-color-5 font-sans self-end font-semibold">
 					{error.source}
