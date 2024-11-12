@@ -1,14 +1,28 @@
-import { useEditorOpen } from "../../../../hooks/useEditorOpen";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getLngInfo } from "../../../../utils/helpers";
+import {
+	handleCreatingModal,
+	resetCreatingModal,
+	setNewProject,
+} from "../../../editor/editorSlice";
 
 const lng = {
 	lngName: "react",
 	description: "Our code editor supports REACT starting from today",
 };
 const NewSupport = () => {
-	const openEditor = useEditorOpen();
 	const detailInfo = getLngInfo(lng.lngName);
 	const lngInfo = { ...detailInfo, ...lng };
+	const dispatch = useDispatch();
+	const navigateTo = useNavigate();
+
+	const open = (type, lngName) => {
+		dispatch(resetCreatingModal());
+		dispatch(setNewProject({ type, lngName }));
+		dispatch(handleCreatingModal(true));
+		navigateTo("/editor/code");
+	};
 
 	return (
 		lngInfo && (
@@ -23,7 +37,7 @@ const NewSupport = () => {
 				</span>
 				<button
 					className="self-start bg-slate-900 bg-opacity-50 text-slate-300 font-semibold text-sm px-3 py-1 rounded-full transition-all duration-300 hover:bg-opacity-80 hover:text-slate-50 hover:shadow-md hover:shadow-n-6"
-					onClick={() => openEditor("snippet", "swift")}
+					onClick={() => open("snippet", "swift")}
 				>
 					Try it now!
 				</button>
