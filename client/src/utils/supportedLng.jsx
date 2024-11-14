@@ -113,4 +113,16 @@ export const supportedLng = [
 		lngName: "typescript",
 		mode: javascript(),
 	},
+	{
+		title: "other",
+		icon: (
+			<img
+				src="/dot.svg"
+				className=" border-[1px] border-color-5 bg-color-5 rounded-full min-w-3  w-3 min-h-3 h-3"
+			/>
+		),
+		extension: "dot",
+		lngName: "other",
+		mode: javascript(),
+	},
 ];
