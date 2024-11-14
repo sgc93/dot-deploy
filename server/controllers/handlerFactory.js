@@ -81,10 +81,13 @@ exports.searchDocs = (Model, docName) =>
 		});
 	});
 
-exports.getAllDocs = (Model, docName) =>
+exports.getAllDocs = (Model, docName, populateOptions) =>
 	catchAsync(async (req, res) => {
 		// BUILD QUERY
-		const features = new APIFeatures(Model.find(), req.query)
+		const features = new APIFeatures(
+			Model.find().populate(populateOptions),
+			req.query
+		)
 			.filter()
 			.sort()
 			.limitFields()
