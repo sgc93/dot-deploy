@@ -15,6 +15,8 @@ import {
 	setNewProject,
 } from "../../../editor/editorSlice";
 
+const languages = supportedLng.reverse();
+
 const CreateModal = ({ exitSelecting, setIsPosting }) => {
 	const [isHovered, setIsHovered] = useState(false);
 	const dispatch = useDispatch();
@@ -109,7 +111,7 @@ const CreateModal = ({ exitSelecting, setIsPosting }) => {
 					</div>
 					{isHovered && (
 						<div className="flex flex-col gap-[2px] absolute z-[100] -right-1 top-6 xs:top-0 xs:left-[70%] sm:left-[103%] bg-slate-800 shadow-md shadow-n-13 rounded-md py-2 min-w-44">
-							{supportedLng.map((lng, index) => (
+							{languages.map((lng, index) => (
 								<LngTab lng={lng} key={index} handleClick={handleClick} />
 							))}
 						</div>

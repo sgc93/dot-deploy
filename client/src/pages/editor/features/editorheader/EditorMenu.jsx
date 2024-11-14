@@ -166,6 +166,8 @@ const AboutCurrProject = ({ project, isNew }) => {
 	);
 };
 
+const languages = supportedLng.reverse();
+
 const MenuTabContent = ({ tabName, selectAction }) => {
 	const { isCreating, newProLngName, newProType, isCreatingModalMinimized } =
 		useSelector((state) => state.editor);
@@ -376,7 +378,7 @@ const MenuTabContent = ({ tabName, selectAction }) => {
 							</div>
 							{isHovered && (
 								<div className="flex flex-col gap-1 absolute z-[100] left-[61%] sm:left-[103%] bg-[#3a404cfe] shadow-md shadow-n-13 rounded-md py-2 min-w-44">
-									{supportedLng.map((lng, index) => (
+									{languages.map((lng, index) => (
 										<LngTab lng={lng} key={index} handleClick={handleClick} />
 									))}
 								</div>
