@@ -108,7 +108,7 @@ const CreateModal = ({ exitSelecting, setIsPosting }) => {
 						{isHovered ? <MdArrowForward /> : <IoIosArrowForward />}
 					</div>
 					{isHovered && (
-						<div className="flex flex-col gap-1 absolute z-[100] -right-1 top-6 xs:top-0 xs:left-[70%] sm:left-[103%] bg-slate-800 shadow-md shadow-n-13 rounded-md py-2 min-w-44">
+						<div className="flex flex-col gap-[2px] absolute z-[100] -right-1 top-6 xs:top-0 xs:left-[70%] sm:left-[103%] bg-slate-800 shadow-md shadow-n-13 rounded-md py-2 min-w-44">
 							{supportedLng.map((lng, index) => (
 								<LngTab lng={lng} key={index} handleClick={handleClick} />
 							))}
