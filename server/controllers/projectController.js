@@ -1,7 +1,18 @@
 const Project = require("../models/projectModel");
 const factory = require("./handlerFactory");
 
-exports.getAllProjects = factory.getAllDocs(Project, "project");
+exports.getAllProjects = factory.getAllDocs(Project, "project", {
+	path: "comments",
+	select: "-__v",
+	options: {
+		sort: { updatedAt: -1 },
+	},
+	populate: {
+		path: "owner",
+		select: "name _id avatarUrl",
+	},
+});
+
 exports.getProject = factory.getDoc(Project, "project", {
 	path: "comments",
 	select: "-__v",
