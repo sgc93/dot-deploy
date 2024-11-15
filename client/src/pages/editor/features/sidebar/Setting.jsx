@@ -97,7 +97,7 @@ const Settings = () => {
 							</div>
 							<div className="flex flex-col gap-2 -mt-3">
 								<div className="flex items-center justify-between gap-1">
-									<span className="text-sm line-clamp-1">Notify me </span>
+									<span className="text-sm line-clamp-1">Auto Save </span>
 									<div
 										className="text-2xl cursor-pointer pr-2 py-2"
 										onClick={() => onAutoSave()}
@@ -113,8 +113,8 @@ const Settings = () => {
 								</div>
 								<div className="flex items-end justify-between gap-3">
 									<span className="text-slate-400 pr-2 line-clamp-3">
-										<span className="text-color-5">Dotcode</span> will notify
-										you to save your changes if there is any in :
+										<span className="text-color-5">Dotcode</span> will
+										automatically save you changes if there is any in :
 									</span>
 									<input
 										type="number"
@@ -125,6 +125,7 @@ const Settings = () => {
 											setInterval(e.target.value > 0 ? e.target.value : 0)
 										}
 									/>
+									<span> secs</span>
 								</div>
 							</div>
 						</div>

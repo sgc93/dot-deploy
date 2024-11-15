@@ -32,7 +32,7 @@ const PublishModal = () => {
 	const openEditor = useEditorOpen();
 
 	const [projectName, setProjectName] = useState(
-		isExpanding ? publishingData.name : isNew ? "" : project.name
+		isExpanding ? publishingData.name : isNew ? project.name : project.name
 	);
 	const [description, setDescription] = useState(
 		isExpanding ? publishingData.description : isNew ? "" : project.description
