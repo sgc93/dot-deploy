@@ -11,12 +11,13 @@ import { useUiUpdate } from "../../hooks/useUiUpdate";
 import EditorToolTip from "../../ui/EditorToolTip";
 import FileNameTab from "../../ui/FileNameTab";
 import PublishModal from "../../ui/PublishModal";
-import { resetNotifier, setNotifier } from "../../ui/notifierSlice";
+import { resetNotifier } from "../../ui/notifierSlice";
 import Editor from "./Editor";
 import EditorModal from "./EditorModal";
 import ResultTerminal from "./ResultTernimal";
 import { updateLogs, updateSplit } from "./editorSlice";
 import SideMenu from "./features/sidebar/SideMenu";
+import { updateProjectRequest } from "./projectSlice";
 
 const CodeBoxHeader = ({ lngName }) => {
 	const { showTerminal, splitDxr } = useSelector((state) => state.editor);
@@ -157,12 +158,12 @@ const EditorCodeBox = () => {
 			if (autoSave && hasCodeChanged) {
 				if (Date.now() - lastSave > notifyInterval) {
 					dispatch(resetNotifier());
-					dispatch(setNotifier({ warning: "You have unsaved changes" }));
+					dispatch(updateProjectRequest(project));
 					dispatch(
 						updateLogs(
 							JSON.stringify({
-								type: "warning",
-								warning: `You have unsaved changes - ${date.toISOString()}`,
+								type: "info",
+								info: `Changes are auto saved - ${date.toISOString()}`,
 							})
 						)
 					);
