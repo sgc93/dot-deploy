@@ -119,12 +119,13 @@ const Publish = ({ selectAction }) => {
 				</div>
 				<div className="flex flex-col gap-2 w-full">
 					<div className="flex-grow flex items-center justify-between gap-3">
-						<span className="font-bold">Notify me</span>
+						<span className="font-bold">Auto Save</span>
 						{autoSave ? <FaToggleOn size={23} /> : <FaToggleOff size={23} />}
 					</div>
 					<span>
-						<span className="text-color-5">Dotcode</span> will notify you to
-						save your changes if there is any in {notifyInterval} sec interval
+						<span className="text-color-5">Dotcode</span> will automatically
+						save your changes if there is any in {notifyInterval} seconds
+						interval
 					</span>
 				</div>
 			</div>
