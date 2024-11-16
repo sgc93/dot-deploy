@@ -26,7 +26,7 @@ const Publish = ({ selectAction }) => {
 	if (isUserSignedIn) {
 		if (isNew) {
 			isOwnerIsThisUser = true;
-		} else {
+		} else if (project.owner._id) {
 			isOwnerIsThisUser =
 				project.owner._id.toString() === user.userId.toString();
 		}
